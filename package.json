@@ -1,0 +1,30 @@
+{
+  "name": "hexly_edu_practice_3cource",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/create-config": "^1.11.0",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "vite": "^8.0.12"
+  },
+  "dependencies": {
+    "@fastify/vite": "^9.0.2",
+    "fastify": "^5.8.5",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  }
+}
