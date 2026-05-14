@@ -1,11 +1,23 @@
 import React from 'react'
+import '@mantine/core/styles.css'
+import { MantineProvider } from '@mantine/core'
+import { BrowserRouter, Routes, Route, Link } from 'react-router'
+
+import { MainPage } from './pages/MainPage.jsx'
+import { UserPage } from './pages/UserPage.jsx'
+import { ManagerPage } from './pages/ManagerPage.jsx'
 
 const App = () => {
   return (
-    <div>
-      <h1>Main Page</h1>
-      <p>Some Text</p>
-    </div>
+    <BrowserRouter>
+      <MantineProvider>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/user" element={<UserPage />} />
+          <Route path="/manager" element={<ManagerPage />} />
+        </Routes>
+      </MantineProvider>
+    </BrowserRouter>
   )
 }
 
