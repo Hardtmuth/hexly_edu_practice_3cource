@@ -5,14 +5,10 @@ import { MantineLogo } from '@mantinex/mantine-logo'
 import { useNavigate } from 'react-router'
 import classes from '../../assets/styles/Header.module.css'
 
+import { useTranslation } from 'react-i18next'
+
 import { SignInForm } from './SignInForm.jsx'
 import { SignUpForm } from './SignUpForm.jsx'
-
-const userLinks = [
-  { link: '#', label: 'Рестораны' },
-  { link: '#', label: 'Контакты' },
-  { link: '#', label: 'Вход / Регистрация' },
-]
 
 const mainLinks = [
   { link: '#', label: 'Бизнес Ланч' },
@@ -26,6 +22,14 @@ export const Header = () => {
   const [active, setActive] = useState(0)
   const [opened, { open, close }] = useDisclosure(false)
   const navigate = useNavigate()
+
+  const { t } = useTranslation()
+
+  const userLinks = [
+    { link: '#', label: t('hello') },
+    { link: '#', label: 'Контакты' },
+    { link: '#', label: 'Вход / Регистрация' },
+  ]
 
   const mainItems = mainLinks.map((item, index) => (
     <Anchor
