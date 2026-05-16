@@ -16,13 +16,13 @@ const pool = new Pool({
 
 const getDishes = async () => {
   try {
-    const dishes = 'dishes';
-    const res = await pool.query(`SELECT * FROM ${dishes} LIMIT 9`)
-    console.log(`Данные из представления ${dishes}:`, res.rows)
+    const breakfast = 'breakfast_cards';
+    const res = await pool.query(`SELECT * FROM ${breakfast} LIMIT 9`)
+    console.log(`Данные из представления ${breakfast}:`, res.rows)
     return res.rows
   }
   catch (err) {
-    console.error(`❌ Ошибка получения даннх из представления ${dishes}:`, err.stack)
+    console.error(`❌ Ошибка получения даннх из представления ${breakfast}:`, err.stack)
   }
 }
 

@@ -1,5 +1,6 @@
 import { Container, SimpleGrid } from '@mantine/core'
 import { DishCard } from './DishCard.jsx'
+import { DishCards } from './DishCards.jsx'
 
 const PRIMARY_COL_HEIGHT = '300px'
 
@@ -10,14 +11,7 @@ export function LeadGrid() {
     <Container>
       <h1>Main Page</h1>
       <p>Some Text</p>
-      <SimpleGrid cols={3} spacing="md">
-        <DishCard />
-        <DishCard />
-        <DishCard />
-        <DishCard />
-        <DishCard />
-        <DishCard />
-      </SimpleGrid>
+        <DishCards />
     </Container>
   )
 }
