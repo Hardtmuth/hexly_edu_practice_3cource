@@ -18,3 +18,9 @@ CREATE TABLE dishes (
     carbs DECIMAL(10,2),
     composition VARCHAR(255)
 );
+
+CREATE TABLE dish_images (
+    image_id SERIAL PRIMARY KEY,
+    dish_id INT NOT NULL REFERENCES dishes(dish_id) ON DELETE CASCADE,
+    url VARCHAR(255) NOT NULL
+);

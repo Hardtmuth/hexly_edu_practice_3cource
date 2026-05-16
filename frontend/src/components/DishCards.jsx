@@ -7,26 +7,26 @@ import { fetchDishes, dishesSelectors } from '../slices/dishesSlice.js'
 
 
 const RenderCard = ({ cardData } ) => {
+  const basePath = new URL('../../assets/img', import.meta.url).href
+  const imgPath = `${basePath}/${cardData.img}`
+  console.log(imgPath)
   return (
     <Box key={cardData.id}>
       <Card shadow="sm" padding="lg" radius="md" withBorder onClick={open}>
         <Card.Section>
           <Image
-            src={'aasd'}
+            src={imgPath}
             height={120}
             alt={cardData.name}
           />
         </Card.Section>
 
         <Group justify="space-between" mt="md">
-          <Text fw={500}>{cardData.name}</Text>
-          <Badge color="pink">{cardData.price}</Badge>
+          <Text fw={500} truncate="end" lineClamp={3}>{cardData.name}</Text>
         </Group>
         <Group justify="space-between">
-
-          <Text size="sm" c="dimmed">
+          <Text size="sm" c="dimmed" truncate="end" lineClamp={3}>
             {cardData.description}
-
           </Text>
         </Group>
         <Button color="blue" fullWidth mt="md" radius="md">
