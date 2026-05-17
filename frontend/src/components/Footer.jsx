@@ -1,39 +1,36 @@
-import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from '@tabler/icons-react'
+import { IconBrandVk, IconBrandGithubFilled, IconBrandTelegram, IconPhone, IconCakeRoll, IconClock } from '@tabler/icons-react'
 import { ActionIcon, Container, Group, Text } from '@mantine/core'
 import { MantineLogo } from '@mantinex/mantine-logo'
 import classes from '../../assets/styles/Footer.module.css'
 
-const data = [
-  {
-    title: 'About',
-    links: [
-      { label: 'Features', link: '#' },
-      { label: 'Pricing', link: '#' },
-      { label: 'Support', link: '#' },
-      { label: 'Forums', link: '#' },
-    ],
-  },
-  {
-    title: 'Project',
-    links: [
-      { label: 'Contribute', link: '#' },
-      { label: 'Media assets', link: '#' },
-      { label: 'Changelog', link: '#' },
-      { label: 'Releases', link: '#' },
-    ],
-  },
-  {
-    title: 'Community',
-    links: [
-      { label: 'Join Discord', link: '#' },
-      { label: 'Follow on Twitter', link: '#' },
-      { label: 'Email newsletter', link: '#' },
-      { label: 'GitHub discussions', link: '#' },
-    ],
-  },
-]
+import { useTranslation } from 'react-i18next'
 
 export const Footer = () => {
+  const { t } = useTranslation()
+
+  const data = [
+    {
+      title: t('mainpage.footer.leftSection.title'),
+      links: [
+        { label: t('mainpage.footer.leftSection.contacts'), link: '#' },
+        { label: t('mainpage.footer.leftSection.delivery'), link: '#' },
+        { label: t('mainpage.footer.leftSection.addresses'), link: '#' },
+        { label: t('mainpage.footer.leftSection.agreement'), link: '#' },
+
+      ],
+    },
+    {
+      title: t('mainpage.footer.rightSection.title'),
+      links: [
+        { label: t('mainpage.footer.rightSection.payment'), link: '#' },
+        { label: t('mainpage.footer.rightSection.vacancies'), link: '#' },
+        { label: t('mainpage.footer.rightSection.phone'), link: '#' },
+        { label: t('mainpage.footer.rightSection.time'), link: '#' },
+        { label: t('mainpage.footer.rightSection.shedule'), link: '#' },
+      ],
+    },
+  ]
+
   const groups = data.map((group) => {
     const links = group.links.map((link, index) => (
       <Text
@@ -43,7 +40,11 @@ export const Footer = () => {
         href={link.link}
         onClick={event => event.preventDefault()}
       >
-        {link.label}
+        {link.label !== t('mainpage.footer.rightSection.phone') 
+          ? link.label == t('mainpage.footer.rightSection.time')
+            ? <><IconClock stroke={1} size={18} style={{ transform: 'translateY(4px)' }} />{link.label}</>
+            : link.label
+          : <><IconPhone stroke={1} size={18} style={{ transform: 'translateY(4px)' }} />{link.label}</>}
       </Text>
     ))
 
@@ -59,27 +60,33 @@ export const Footer = () => {
     <footer className={classes.footer}>
       <Container className={classes.inner}>
         <div className={classes.logo}>
-          <MantineLogo size={30} />
+          <Group>
+            <IconCakeRoll size={34} />
+            <Text size="lg" fs="italic" c="blue">
+              {t('mainpage.brand')}
+            </Text>
+          </Group>
+            
           <Text size="xs" c="dimmed" className={classes.description}>
-            Build fully functional accessible web applications faster than ever
+            {t('mainpage.text')}
           </Text>
         </div>
         <div className={classes.groups}>{groups}</div>
       </Container>
       <Container className={classes.afterFooter}>
         <Text c="dimmed" size="sm">
-          © 2020 mantine.dev. All rights reserved.
+          {t('mainpage.footer.disclaimer')}
         </Text>
 
         <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle" aria-label="Twitter">
-            <IconBrandTwitter size={18} stroke={1.5} />
+            <IconBrandVk size={18} stroke={1.5} />
           </ActionIcon>
           <ActionIcon size="lg" color="gray" variant="subtle" aria-label="Youtube">
-            <IconBrandYoutube size={18} stroke={1.5} />
+            <IconBrandTelegram size={18} stroke={1.5} />
           </ActionIcon>
           <ActionIcon size="lg" color="gray" variant="subtle" aria-label="Instagram">
-            <IconBrandInstagram size={18} stroke={1.5} />
+            <IconBrandGithubFilled size={18} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Container>

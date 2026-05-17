@@ -1,22 +1,15 @@
 import { useState } from 'react'
-import { Anchor, Box, Burger, Container, Divider, Drawer, Group, ScrollArea, Modal, Tabs } from '@mantine/core'
+import { Anchor, Box, Burger, Container, Divider, Drawer, Group, ScrollArea, Modal, Tabs, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { MantineLogo } from '@mantinex/mantine-logo'
 import { useNavigate } from 'react-router'
+import { IconBasket, IconCakeRoll } from '@tabler/icons-react';
 import classes from '../../assets/styles/Header.module.css'
 
 import { useTranslation } from 'react-i18next'
 
 import { SignInForm } from './SignInForm.jsx'
 import { SignUpForm } from './SignUpForm.jsx'
-
-const mainLinks = [
-  { link: '#', label: 'Бизнес Ланч' },
-  { link: '#', label: 'Затрак' },
-  { link: '#', label: 'Обед' },
-  { link: '#', label: 'Ужин' },
-  { link: '#', label: 'Доставка' },
-]
 
 export const Header = () => {
   const [active, setActive] = useState(0)
@@ -26,9 +19,18 @@ export const Header = () => {
   const { t } = useTranslation()
 
   const userLinks = [
-    { link: '#', label: t('hello') },
-    { link: '#', label: 'Контакты' },
-    { link: '#', label: 'Вход / Регистрация' },
+    { link: '#', label: t('mainpage.header.addresses') },
+    { link: '#', label: t('mainpage.header.contacts') },
+    { link: '#', label: t('mainpage.header.signinout') },
+    { link: '#', label: t('mainpage.header.cart') },
+  ]
+
+  const mainLinks = [
+    { link: '#', label: t('mainpage.header.businesslunch') },
+    { link: '#', label: t('mainpage.header.breakfast') },
+    { link: '#', label: t('mainpage.header.lunch') },
+    { link: '#', label: t('mainpage.header.dinner') },
+    { link: '#', label: t('mainpage.header.delivery') },
   ]
 
   const mainItems = mainLinks.map((item, index) => (
@@ -53,29 +55,28 @@ export const Header = () => {
       onClick={open}
       className={classes.secondaryLink}
     >
-      {item.label}
+      {item.label !== 'Корзина' ? item.label : <IconBasket />}
     </Anchor>
   ))
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Authentication">
-
-        <Tabs defaultValue="first">
+      <Modal opened={opened} onClose={close}>
+        <Tabs defaultValue="signin">
           <Tabs.List>
-            <Tabs.Tab value="first">
-              First tab
+            <Tabs.Tab value="signin">
+              {t('mainpage.signform.signin')}
             </Tabs.Tab>
-            <Tabs.Tab value="second">
-              Second tab
+            <Tabs.Tab value="signup">
+              {t('mainpage.signform.signup')}
             </Tabs.Tab>
           </Tabs.List>
 
-          <Tabs.Panel value="first">
+          <Tabs.Panel value="signin">
             <SignInForm />
           </Tabs.Panel>
 
-          <Tabs.Panel value="second">
+          <Tabs.Panel value="signup">
             <SignUpForm />
           </Tabs.Panel>
         </Tabs>
@@ -83,11 +84,16 @@ export const Header = () => {
 
       <header className={classes.header}>
         <Container className={classes.inner}>
-          <MantineLogo
-            size={34}
+          <Group
             onClick={() => navigate('/manager')}
             style={{ cursor: 'pointer' }}
-          />
+          >
+            <IconCakeRoll size={34} />
+            <Text size="lg" fs="italic" c="blue">
+              {t('mainpage.brand')}
+            </Text>
+          </Group>
+          
           <Box className={classes.links} visibleFrom="sm">
             <Group justify="flex-end">{secondaryItems}</Group>
             <Group gap={0} justify="flex-end" className={classes.mainLinks}>

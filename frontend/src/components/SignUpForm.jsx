@@ -1,31 +1,31 @@
 import { Input, PasswordInput, Button, MaskInput } from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 export const SignUpForm = () => {
+  const { t } = useTranslation()
   return (
     <>
-      <Input.Wrapper
-        label="Input label"
-        error=""
-      >
-        <Input placeholder="Input inside Input.Wrapper" />
+      <Input.Wrapper mt="lg" error="">
+        <Input placeholder={t('mainpage.signform.username')} />
       </Input.Wrapper>
-      <Input placeholder="Your email" leftSection={<IconAt size={16} />} />
+      <Input mt="lg" placeholder={t('mainpage.signform.email')} rightSection={<IconAt size={16} />} />
       <MaskInput
-        label="Input label"
-        description="Input description"
-        mask="(999) 999-9999"
-        placeholder="+7(___) ___-____"
+        mt="lg"
+        mask="+7 (999) 999-9999"
+        placeholder={t('mainpage.signform.phone')}
       />
       <PasswordInput
-        label="Input label"
-        placeholder="Input placeholder"
+        mt="lg"
+        placeholder={t('mainpage.signform.password')}
       />
       <PasswordInput
-        label="Input label"
-        placeholder="Input placeholder"
+        mt="lg"
+        placeholder={t('mainpage.signform.passwordConfirm')}
       />
-      <Button mt="md" fullWidth>Зарегистрировться</Button>
+      <Button mt="md" fullWidth>
+        {t('mainpage.signform.signupBtn')}
+      </Button>
     </>
   )
 }
