@@ -5,14 +5,16 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchDishes, dishesSelectors } from '../slices/dishesSlice.js'
 
+import { CardModal } from './CardModal.jsx'
 
-const RenderCard = ({ cardData } ) => {
+
+const RenderCard = ({ cardData, onOpenModal } ) => {
   const basePath = new URL('../../assets/img', import.meta.url).href
   const imgPath = `${basePath}/${cardData.img}`
-  console.log(imgPath)
+  // console.log(imgPath)
   return (
     <Box key={cardData.id}>
-      <Card shadow="sm" padding="lg" radius="md" withBorder onClick={open}>
+      <Card shadow="sm" padding="lg" radius="md" withBorder onClick={() => onOpenModal(cardData)}>
         <Card.Section>
           <Image
             src={imgPath}
@@ -47,19 +49,35 @@ const DishCards = () => {
   const dishesList = dishesIds.map(id => dishesEntities[id])
   console.log('dishes is: ', dishes)
 
+  const [opened, { open, close }] = useDisclosure(false)
+  const [selectedCard, setSelectedCard] = useState(null);
+
   useEffect(() => {
     dispatch(fetchDishes())
   }, [dispatch])
 
+  const handleOpenModal = (cardData) => {
+    setSelectedCard(cardData)
+    open()
+  }
+
   return (
-    <SimpleGrid cols={3} spacing="sm" mb="xl">
-      {dishesList.map((cardData) => (
-        <RenderCard
-          key={cardData.id}
-          cardData={cardData}
-        />
-      ))}
-    </SimpleGrid>
+    <>
+      <Modal opened={opened} onClose={close} title={selectedCard ? `${selectedCard.name}` : ''}>
+        {selectedCard && <CardModal cardData={selectedCard} />}
+      </Modal>
+
+      <SimpleGrid cols={3} spacing="sm" mb="xl">
+        {dishesList.map((cardData) => (
+          <RenderCard
+            key={cardData.id}
+            cardData={cardData}
+            onOpenModal={handleOpenModal}
+          />
+        ))}
+      </SimpleGrid>
+    </>
+    
   )
 }
 

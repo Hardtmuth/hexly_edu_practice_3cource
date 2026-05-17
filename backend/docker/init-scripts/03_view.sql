@@ -3,6 +3,7 @@ SELECT DISTINCT
   d.dish_id AS id,
   d.dish_name AS name,
   d.price AS price,
+  d.weight AS weight,
   d.composition AS description,
   i.url AS img
 FROM dishes d
