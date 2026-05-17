@@ -3,14 +3,23 @@ import { useDisclosure } from '@mantine/hooks'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+
 import { fetchDishes, dishesSelectors } from '../slices/dishesSlice.js'
+import { addItem, removeItem } from '../slices/cartSlice.js'
 
 import { CardModal } from './CardModal.jsx'
 
 
 const RenderCard = ({ cardData, onOpenModal } ) => {
+  const dispatch = useDispatch()
   const basePath = new URL('../../assets/img', import.meta.url).href
   const imgPath = `${basePath}/${cardData.img}`
+
+  const addToCartHandle = (dish) => {
+    console.log('Add to cart: ', dish)
+    dispatch(addItem({ item: dish }))
+  }
+
   // console.log(imgPath)
   return (
     <Box key={cardData.id}>
@@ -31,7 +40,12 @@ const RenderCard = ({ cardData, onOpenModal } ) => {
             {cardData.description}
           </Text>
         </Group>
-        <Button color="blue" fullWidth mt="md" radius="md">
+        <Button
+          color="blue"
+          fullWidth mt="md"
+          radius="md"
+          onClick={() => addToCartHandle(cardData)}
+        >
           {cardData.price}
           {' '}
           р.
@@ -47,7 +61,8 @@ const DishCards = () => {
   const dishesIds = useSelector(dishesSelectors.selectIds)
   const dishesEntities = useSelector(dishesSelectors.selectEntities)
   const dishesList = dishesIds.map(id => dishesEntities[id])
-  console.log('dishes is: ', dishes)
+  const cart = useSelector(state => state.cart)
+  console.log('cart is: ', cart)
 
   const [opened, { open, close }] = useDisclosure(false)
   const [selectedCard, setSelectedCard] = useState(null);
@@ -77,7 +92,7 @@ const DishCards = () => {
         ))}
       </SimpleGrid>
     </>
-    
+
   )
 }
 

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router'
 import { MainPage } from './pages/MainPage.jsx'
 import { UserPage } from './pages/UserPage.jsx'
 import { ManagerPage } from './pages/ManagerPage.jsx'
+import { CartPage } from './pages/CartPage.jsx'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/manager" element={<ManagerPage />} />
+          <Route path="/cart" element={<CartPage />} />
         </Routes>
       </MantineProvider>
     </BrowserRouter>

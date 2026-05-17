@@ -52,7 +52,7 @@ export const Header = () => {
     <Anchor
       href={item.link}
       key={item.label}
-      onClick={open}
+      onClick={() => navigate('/cart')} // if no navigate reset store
       className={classes.secondaryLink}
     >
       {item.label !== 'Корзина' ? item.label : <IconBasket />}
