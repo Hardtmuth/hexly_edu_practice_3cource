@@ -13,10 +13,10 @@ const App = () => {
     <BrowserRouter>
       <MantineProvider>
         <Routes>
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/manager" element={<ManagerPage />} />
-          <Route path="/cart" element={<CartPage />} />
         </Routes>
       </MantineProvider>
     </BrowserRouter>

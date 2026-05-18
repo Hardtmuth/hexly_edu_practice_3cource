@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Anchor, Box, Burger, Container, Divider, Drawer, Group, ScrollArea, Modal, Tabs, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { MantineLogo } from '@mantinex/mantine-logo'
-import { useNavigate } from 'react-router'
+import { useNavigate, Link } from 'react-router'
 import { IconBasket, IconCakeRoll } from '@tabler/icons-react';
 import classes from '../../assets/styles/Header.module.css'
 
@@ -22,11 +22,11 @@ export const Header = () => {
     { link: '#', label: t('mainpage.header.addresses') },
     { link: '#', label: t('mainpage.header.contacts') },
     { link: '#', label: t('mainpage.header.signinout') },
-    { link: '#', label: t('mainpage.header.cart') },
+    { link: '/cart', label: t('mainpage.header.cart') },
   ]
 
   const mainLinks = [
-    { link: '#', label: t('mainpage.header.businesslunch') },
+    { link: '/', label: t('mainpage.header.businesslunch') },
     { link: '#', label: t('mainpage.header.breakfast') },
     { link: '#', label: t('mainpage.header.lunch') },
     { link: '#', label: t('mainpage.header.dinner') },
@@ -42,6 +42,7 @@ export const Header = () => {
       onClick={(event) => {
         event.preventDefault()
         setActive(index)
+        navigate(item.link)
       }}
     >
       {item.label}
@@ -50,12 +51,11 @@ export const Header = () => {
 
   const secondaryItems = userLinks.map(item => (
     <Anchor
-      href={item.link}
       key={item.label}
-      onClick={() => navigate('/cart')} // if no navigate reset store
+      renderRoot={(props) => <Link to={item.link} {...props} />} // !!! etalon
       className={classes.secondaryLink}
     >
-      {item.label !== 'Корзина' ? item.label : <IconBasket />}
+      {item.link !== '/cart' ? item.label : <IconBasket />}
     </Anchor>
   ))
 
@@ -93,7 +93,7 @@ export const Header = () => {
               {t('mainpage.brand')}
             </Text>
           </Group>
-          
+
           <Box className={classes.links} visibleFrom="sm">
             <Group justify="flex-end">{secondaryItems}</Group>
             <Group gap={0} justify="flex-end" className={classes.mainLinks}>

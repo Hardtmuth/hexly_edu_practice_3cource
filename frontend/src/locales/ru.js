@@ -43,5 +43,23 @@ export default {
         shedule: 'Ежедневно: 10:00–22:00'
       }
     }
+  },
+  cartpage : {
+    cart: 'Корзина',
+    clearCart: 'Очистить корзину',
+    empty: 'Ваша корзина пуста',
+    totalPrice: 'Итого:',
+    currency: 'р.',
+    order: 'Оформить заказ',
+    table: {
+      dishName: 'Блюдо',
+      price: 'Цена',
+      quantity: 'Количество',
+      cost: 'Стоимость'
+    },
+    orderModal: {
+      header: 'Спасибо за заказ',
+      text: 'Заказ отправлен на кухню, ожидайте'
+    }
   }
 }
