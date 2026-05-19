@@ -1,3 +1,5 @@
+import { CardModal } from '../components/CardModal'
+
 export default {
   mainpage: {
     brand: 'Кафе Нокталия',
@@ -40,11 +42,14 @@ export default {
         vacancies: 'Вакансии',
         phone: '+7 (831) 452-00-20',
         time: 'Время работы:',
-        shedule: 'Ежедневно: 10:00–22:00'
-      }
-    }
+        shedule: 'Ежедневно: 10:00–22:00',
+      },
+    },
+    card: {
+      btnAdded: 'Добавлено',
+    },
   },
-  cartpage : {
+  cartpage: {
     cart: 'Корзина',
     clearCart: 'Очистить корзину',
     empty: 'Ваша корзина пуста',
@@ -55,11 +60,11 @@ export default {
       dishName: 'Блюдо',
       price: 'Цена',
       quantity: 'Количество',
-      cost: 'Стоимость'
+      cost: 'Стоимость',
     },
     orderModal: {
       header: 'Спасибо за заказ',
-      text: 'Заказ отправлен на кухню, ожидайте'
-    }
-  }
+      text: 'Заказ отправлен на кухню, ожидайте',
+    },
+  },
 }

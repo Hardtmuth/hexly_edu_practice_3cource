@@ -9,11 +9,15 @@ import { addToCart } from '../slices/cartSlice.js'
 
 import { CardModal } from './CardModal.jsx'
 
-
-const RenderCard = ({ cardData, onOpenModal } ) => {
+const RenderCard = ({ cardData, onOpenModal }) => {
   const dispatch = useDispatch()
   const basePath = new URL('../../assets/img', import.meta.url).href
   const imgPath = `${basePath}/${cardData.img}`
+
+  const [buttonState, setButtonState] = useState({
+    loading: false,
+    added: false,
+  })
 
   /* useEffect(() => {
     const cartItems = sessionStorage.getItem('cart')
@@ -27,11 +31,18 @@ const RenderCard = ({ cardData, onOpenModal } ) => {
         item.id === itemId ? { ...item, count: item.count + 1 } : item
       )
     )
-  }*/
+  } */
 
   const addToCartHandle = (dish) => {
+    setButtonState({ loading: true, added: false })
     dispatch(addToCart(dish))
-  } 
+    setTimeout(() => {
+      setButtonState({ loading: false, added: true })
+      setTimeout(() => {
+        setButtonState({ loading: false, added: false })
+      }, 1000)
+    }, 1000)
+  }
 
   return (
     <Box key={cardData.id}>
@@ -55,13 +66,14 @@ const RenderCard = ({ cardData, onOpenModal } ) => {
         </Group>
         <Button
           color="blue"
-          fullWidth mt="md"
+          fullWidth
+          mt="md"
           radius="md"
           onClick={() => addToCartHandle(cardData)}
+          loading={buttonState.loading}
+          loaderProps={{ type: 'dots' }}
         >
-          {cardData.price}
-          {' '}
-          р.
+          {buttonState.added ? 'Добавлено' : `${cardData.price} р.`}
         </Button>
       </Card>
     </Box>
@@ -70,7 +82,7 @@ const RenderCard = ({ cardData, onOpenModal } ) => {
 
 const DishCards = () => {
   const dispatch = useDispatch()
-  const dishes = useSelector(dishesSelectors.selectEntities)
+  // const dishes = useSelector(dishesSelectors.selectEntities)
   const dishesIds = useSelector(dishesSelectors.selectIds)
   const dishesEntities = useSelector(dishesSelectors.selectEntities)
   const dishesList = dishesIds.map(id => dishesEntities[id])
@@ -96,7 +108,7 @@ const DishCards = () => {
       </Modal>
 
       <SimpleGrid cols={3} spacing="sm" mb="xl">
-        {dishesList.map((cardData) => (
+        {dishesList.map(cardData => (
           <RenderCard
             key={cardData.id}
             cardData={cardData}

@@ -1,5 +1,4 @@
 import { Container, SimpleGrid, Text } from '@mantine/core'
-import { DishCard } from './DishCard.jsx'
 import { DishCards } from './DishCards.jsx'
 
 import { useTranslation } from 'react-i18next'

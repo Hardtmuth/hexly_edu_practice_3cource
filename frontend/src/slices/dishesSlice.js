@@ -6,9 +6,9 @@ export const fetchDishes = createAsyncThunk(
   'dishes/fetchDishes',
   async () => {
     // const token = JSON.parse(localStorage.getItem('userId')).token
-    //if (!token) {
+    // if (!token) {
     //  throw new Error('Токен не найден')
-    //}
+    // }
     const response = await axios.get(routes.dishesPath())
     // console.log('Response is: ', response)
     return response.data

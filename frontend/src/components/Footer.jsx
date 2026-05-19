@@ -40,11 +40,21 @@ export const Footer = () => {
         href={link.link}
         onClick={event => event.preventDefault()}
       >
-        {link.label !== t('mainpage.footer.rightSection.phone') 
+        {link.label !== t('mainpage.footer.rightSection.phone')
           ? link.label == t('mainpage.footer.rightSection.time')
-            ? <><IconClock stroke={1} size={18} style={{ transform: 'translateY(4px)' }} />{link.label}</>
+            ? (
+                <>
+                  <IconClock stroke={1} size={18} style={{ transform: 'translateY(4px)' }} />
+                  {link.label}
+                </>
+              )
             : link.label
-          : <><IconPhone stroke={1} size={18} style={{ transform: 'translateY(4px)' }} />{link.label}</>}
+          : (
+              <>
+                <IconPhone stroke={1} size={18} style={{ transform: 'translateY(4px)' }} />
+                {link.label}
+              </>
+            )}
       </Text>
     ))
 
@@ -66,7 +76,7 @@ export const Footer = () => {
               {t('mainpage.brand')}
             </Text>
           </Group>
-            
+
           <Text size="xs" c="dimmed" className={classes.description}>
             {t('mainpage.text')}
           </Text>

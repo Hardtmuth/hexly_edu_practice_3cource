@@ -1,4 +1,3 @@
-import { getContrastColor } from '@mantine/core'
 import { createSlice } from '@reduxjs/toolkit'
 
 const cartSlice = createSlice({
@@ -9,7 +8,8 @@ const cartSlice = createSlice({
       const existingItem = state.find(item => item.id === action.payload.id)
       if (existingItem) {
         existingItem.count += 1
-      } else {
+      }
+      else {
         state.push({ ...action.payload, count: 1 })
       }
     },
@@ -24,8 +24,8 @@ const cartSlice = createSlice({
     removeItem: (state, action) => {
       return state.filter(item => item.id !== action.payload)
     },
-    clearCart: () => []
-  }
+    clearCart: () => [],
+  },
 })
 
 export const { addToCart, increment, decrement, removeItem, clearCart } = cartSlice.actions

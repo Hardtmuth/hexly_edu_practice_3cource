@@ -3,7 +3,7 @@ import { Anchor, Box, Burger, Container, Divider, Drawer, Group, ScrollArea, Mod
 import { useDisclosure } from '@mantine/hooks'
 import { MantineLogo } from '@mantinex/mantine-logo'
 import { useNavigate, Link } from 'react-router'
-import { IconBasket, IconCakeRoll } from '@tabler/icons-react';
+import { IconBasket, IconCakeRoll } from '@tabler/icons-react'
 import classes from '../../assets/styles/Header.module.css'
 
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,11 @@ export const Header = () => {
   const userLinks = [
     { link: '#', label: t('mainpage.header.addresses') },
     { link: '#', label: t('mainpage.header.contacts') },
-    { link: '#', label: t('mainpage.header.signinout') },
+    {
+      isModal: true,
+      label: t('mainpage.header.signinout'),
+      onClick: open,
+    },
     { link: '/cart', label: t('mainpage.header.cart') },
   ]
 
@@ -49,15 +53,32 @@ export const Header = () => {
     </Anchor>
   ))
 
-  const secondaryItems = userLinks.map(item => (
-    <Anchor
-      key={item.label}
-      renderRoot={(props) => <Link to={item.link} {...props} />} // !!! etalon
-      className={classes.secondaryLink}
-    >
-      {item.link !== '/cart' ? item.label : <IconBasket />}
-    </Anchor>
-  ))
+  const secondaryItems = userLinks.map((item) => {
+    if (item.isModal) {
+      return (
+        <Anchor
+          key={item.label}
+          className={classes.secondaryLink}
+          onClick={(event) => {
+            event.preventDefault()
+            item.onClick()
+          }}
+        >
+          {item.label}
+        </Anchor>
+      )
+    }
+
+    return (
+      <Anchor
+        key={item.label}
+        renderRoot={props => <Link to={item.link} {...props} />}
+        className={classes.secondaryLink}
+      >
+        {item.link !== '/cart' ? item.label : <IconBasket />}
+      </Anchor>
+    )
+  })
 
   return (
     <>
