@@ -29,24 +29,25 @@ export const Header = () => {
   ]
 
   const mainLinks = [
-    { link: '/', label: t('mainpage.header.businesslunch') },
-    { link: '#', label: t('mainpage.header.breakfast') },
-    { link: '#', label: t('mainpage.header.lunch') },
-    { link: '#', label: t('mainpage.header.dinner') },
-    { link: '#', label: t('mainpage.header.drinks') },
-    { link: '#', label: t('mainpage.header.delivery') },
+    { link: '/', label: t('mainpage.header.breakfast'), category: 'breakfast'},
+    { link: '/', label: t('mainpage.header.lunch'), category: 'lunch' },
+    { link: '/', label: t('mainpage.header.dinner'), category: 'dinner' },
+    { link: '/', label: t('mainpage.header.drinks'), category: 'drinks' },
+
+    { link: '/', label: t('mainpage.header.businesslunch'), category: 'businesslunch'},
+    { link: '/', label: t('mainpage.header.menu'), category: 'menu'},
+    { link: '/', label: t('mainpage.header.delivery'), category: 'delivery' },
   ]
 
   const mainItems = mainLinks.map((item, index) => (
     <Anchor
-      href={item.link}
       key={item.label}
       className={classes.mainLink}
       data-active={index === active || undefined}
       onClick={(event) => {
         event.preventDefault()
         setActive(index)
-        navigate(item.link)
+        navigate(`/?category=${item.category}`)
       }}
     >
       {item.label}

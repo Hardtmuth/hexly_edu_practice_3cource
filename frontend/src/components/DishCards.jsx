@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useSearchParams } from 'react-router'
 
 import { fetchDishes, dishesSelectors } from '../slices/dishesSlice.js'
 import { addToCart } from '../slices/cartSlice.js'
@@ -66,6 +67,13 @@ const RenderCard = ({ cardData, onOpenModal }) => {
   )
 }
 
+const categoriesMap = {
+  'breakfast': [1],
+  'lunch': [2, 5, 6],
+  'dinner': [6, 7, 8],
+  'drinks': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+}
+
 const DishCards = () => {
   const dispatch = useDispatch()
   // const dishes = useSelector(dishesSelectors.selectEntities)
@@ -74,6 +82,19 @@ const DishCards = () => {
   const dishesList = dishesIds.map(id => dishesEntities[id])
   // const cart = useSelector(state => state.cart)
   // console.log('cart is: ', cart)
+
+  const [searchParams] = useSearchParams()
+  const category = searchParams.get('category')
+  console.log(category)
+
+  const filteredDishes = category
+    ? dishesList.filter((dish) => {
+      console.log(dish.category, categoriesMap[category], categoriesMap[category].includes(dish.category))
+      return categoriesMap[category].includes(dish.category)
+    })
+    : dishesList
+
+  console.log('filteredDishes is: ', filteredDishes)
 
   const [opened, { open, close }] = useDisclosure(false)
   const [selectedCard, setSelectedCard] = useState(null)
@@ -94,7 +115,7 @@ const DishCards = () => {
       </Modal>
 
       <SimpleGrid cols={3} spacing="sm" mb="xl">
-        {dishesList.map(cardData => (
+        {filteredDishes.map(cardData => (
           <RenderCard
             key={cardData.id}
             cardData={cardData}

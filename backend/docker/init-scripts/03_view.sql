@@ -1,6 +1,7 @@
-CREATE VIEW breakfast_cards AS
+CREATE VIEW dish_cards AS
 SELECT DISTINCT
   d.dish_id AS id,
+  d.category_id AS category,
   d.dish_name AS name,
   d.price AS price,
   d.weight AS weight,
@@ -11,5 +12,4 @@ SELECT DISTINCT
   d.carbs AS carbs,
   i.url AS img
 FROM dishes d
-RIGHT JOIN dish_images i ON d.dish_id = i.dish_id
-WHERE d.category_id = 1;
+RIGHT JOIN dish_images i ON d.dish_id = i.dish_id;

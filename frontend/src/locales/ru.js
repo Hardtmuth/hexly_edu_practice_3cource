@@ -14,6 +14,7 @@ export default {
       lunch: 'Обед',
       dinner: 'Ужин',
       drinks: 'Напитки',
+      menu: 'Меню',
       delivery: 'Доставка',
     },
     signform: {
