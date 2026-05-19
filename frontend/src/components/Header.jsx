@@ -19,8 +19,7 @@ export const Header = () => {
   const { t } = useTranslation()
 
   const userLinks = [
-    { link: '#', label: t('mainpage.header.addresses') },
-    { link: '#', label: t('mainpage.header.contacts') },
+    { link: '/addresses', label: t('mainpage.header.addresses') },
     {
       isModal: true,
       label: t('mainpage.header.signinout'),
@@ -34,6 +33,7 @@ export const Header = () => {
     { link: '#', label: t('mainpage.header.breakfast') },
     { link: '#', label: t('mainpage.header.lunch') },
     { link: '#', label: t('mainpage.header.dinner') },
+    { link: '#', label: t('mainpage.header.drinks') },
     { link: '#', label: t('mainpage.header.delivery') },
   ]
 
