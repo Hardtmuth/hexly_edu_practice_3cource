@@ -19,20 +19,6 @@ const RenderCard = ({ cardData, onOpenModal }) => {
     added: false,
   })
 
-  /* useEffect(() => {
-    const cartItems = sessionStorage.getItem('cart')
-    ? setCart(JSON.parse(sessionStorage.getItem('cart')))
-    : setCart([])
-  }, [])
-
-  const increment = (itemId) => {
-    setCart(prevCart =>
-      prevCart.map(item =>
-        item.id === itemId ? { ...item, count: item.count + 1 } : item
-      )
-    )
-  } */
-
   const addToCartHandle = (dish) => {
     setButtonState({ loading: true, added: false })
     dispatch(addToCart(dish))
