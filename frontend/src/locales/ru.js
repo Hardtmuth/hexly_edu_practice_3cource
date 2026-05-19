@@ -80,5 +80,10 @@ export default {
     price: 'Стоимость',
     currency: 'р.',
     unit: 'г.',
+    calories: 'Калории',
+    caloriesUnit: 'Ккал',
+    protein: 'Белки',
+    fat: 'Жиры',
+    carbs: 'Углеводы',
   }
 }

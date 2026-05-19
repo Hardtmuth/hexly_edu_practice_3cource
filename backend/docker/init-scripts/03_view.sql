@@ -5,6 +5,10 @@ SELECT DISTINCT
   d.price AS price,
   d.weight AS weight,
   d.composition AS description,
+  d.calories AS calories,
+  d.protein AS protein,
+  d.fat AS fat,
+  d.carbs AS carbs,
   i.url AS img
 FROM dishes d
 RIGHT JOIN dish_images i ON d.dish_id = i.dish_id

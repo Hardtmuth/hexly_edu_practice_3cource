@@ -43,6 +43,26 @@ const CardModal = ({ cardData }) => {
           </Table.Tr>
 
           <Table.Tr>
+            <Table.Th>{t('dishCardModal.calories')}</Table.Th>
+            <Table.Td>{`${cardData.calories} ${t('dishCardModal.caloriesUnit')}`}</Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('dishCardModal.protein')}</Table.Th>
+            <Table.Td>{cardData.protein}</Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('dishCardModal.fat')}</Table.Th>
+            <Table.Td>{cardData.fat}</Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
+            <Table.Th>{t('dishCardModal.carbs')}</Table.Th>
+            <Table.Td>{cardData.carbs}</Table.Td>
+          </Table.Tr>
+
+          <Table.Tr>
             <Table.Th>{t('dishCardModal.weight')}</Table.Th>
             <Table.Td>{`${cardData.weight} ${t('dishCardModal.unit')}`}</Table.Td>
           </Table.Tr>
