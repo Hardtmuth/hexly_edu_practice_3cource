@@ -8,6 +8,7 @@ import { UserPage } from './pages/UserPage.jsx'
 import { ManagerPage } from './pages/ManagerPage.jsx'
 import { CartPage } from './pages/CartPage.jsx'
 import { RestorauntsPage } from './pages/RestorauntsPage.jsx'
+import { DeliveryPage } from './pages/DeliveryPage.jsx'
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Routes>
           <Route path="/addresses" element={<RestorauntsPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/delivery" element={<DeliveryPage />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/manager" element={<ManagerPage />} />

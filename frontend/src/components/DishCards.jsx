@@ -1,5 +1,7 @@
-import { SimpleGrid, Card, Image, Text, Badge, Button, Group, Pagination, Center, Modal, Box } from '@mantine/core'
+import { SimpleGrid, Card, Image, Text, Badge, Button, Group, Pagination, Center, Modal, Box, Title, Table, ActionIcon } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+
+import { IconBasket } from '@tabler/icons-react'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -67,14 +69,90 @@ const RenderCard = ({ cardData, onOpenModal }) => {
   )
 }
 
-const categoriesMap = {
-  'breakfast': [1],
-  'lunch': [2, 5, 6],
-  'dinner': [6, 7, 8],
-  'drinks': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+const RenderTable = ({ cardData, onOpenModal }) => {
+  const dispatch = useDispatch()
+
+  const [buttonState, setButtonState] = useState({
+    loading: false,
+    added: false,
+  })
+
+  const addToCartHandle = (dish) => {
+    setButtonState({ loading: true, added: false })
+    dispatch(addToCart(dish))
+    setTimeout(() => {
+      setButtonState({ loading: false, added: true })
+      setTimeout(() => {
+        setButtonState({ loading: false, added: false })
+      }, 1000)
+    }, 1000)
+  }
+
+  return (
+    <Table.Tr>
+      <Table.Td
+        w="75%"
+        style={{ cursor: 'pointer' }}
+        onClick={() => onOpenModal(cardData)}
+      >
+        {cardData.name}
+      </Table.Td>
+      <Table.Td>
+        {cardData.weight}
+        {' '}
+        г.
+      </Table.Td>
+      <Table.Td>
+        {cardData.price}
+        {' '}
+        р.
+      </Table.Td>
+      <Table.Td>
+        <ActionIcon
+          variant="default"
+          onClick={() => addToCartHandle(cardData)}
+          loading={buttonState.loading}
+          loaderProps={{ type: 'dots' }}
+        >
+          <IconBasket size={18} stroke={1} />
+        </ActionIcon>
+      </Table.Td>
+    </Table.Tr>
+  )
 }
 
-const DishCards = () => {
+const categoriesMap = {
+  breakfast: [1],
+  lunch: [2, 5, 6],
+  dinner: [6, 7, 8],
+  drinks: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+}
+
+const categoriesNames = {
+  1: 'Завтрак',
+  2: 'Салаты',
+  3: 'Закуски',
+  4: 'Фри',
+  5: 'Супы',
+  6: 'Гарниры',
+  7: 'Паста',
+  8: 'Горячее',
+  9: 'Неаполитанская пицца',
+  10: 'Освежающие напитки',
+  11: 'Домашние лимонады',
+  12: 'Морс',
+  13: 'Холодные напитки',
+  14: 'Милкшейки',
+  15: 'Алкогольные напитки',
+  16: 'Бутылочное пиво',
+  17: 'Разливное пиво',
+  18: 'Чай',
+  19: 'Заварной в чайнике',
+  20: 'Кофе',
+}
+
+const DishCards = (view) => {
+  // console.log('view is: ', view)
   const dispatch = useDispatch()
   // const dishes = useSelector(dishesSelectors.selectEntities)
   const dishesIds = useSelector(dishesSelectors.selectIds)
@@ -85,16 +163,24 @@ const DishCards = () => {
 
   const [searchParams] = useSearchParams()
   const category = searchParams.get('category')
-  console.log(category)
+  // console.log(category)
 
-  const filteredDishes = category
+  const filteredDishes = (category && !['businesslunch', 'menu', 'delivery'].includes(category))
     ? dishesList.filter((dish) => {
-      console.log(dish.category, categoriesMap[category], categoriesMap[category].includes(dish.category))
-      return categoriesMap[category].includes(dish.category)
-    })
+      // console.log(dish.category, categoriesMap[category], categoriesMap[category].includes(dish.category))
+        return categoriesMap[category].includes(dish.category)
+      })
     : dishesList
 
-  console.log('filteredDishes is: ', filteredDishes)
+  const dishesByCategory = filteredDishes.reduce((acc, dish) => {
+    if (!Object.hasOwn(acc, dish.category)) {
+      acc[dish.category] = []
+    }
+    acc[dish.category].push(dish)
+    return acc
+  }, {})
+
+  // console.log('dishesByCategory is: ', dishesByCategory)
 
   const [opened, { open, close }] = useDisclosure(false)
   const [selectedCard, setSelectedCard] = useState(null)
@@ -114,15 +200,40 @@ const DishCards = () => {
         {selectedCard && <CardModal cardData={selectedCard} />}
       </Modal>
 
-      <SimpleGrid cols={3} spacing="sm" mb="xl">
-        {filteredDishes.map(cardData => (
+      {Object.entries(dishesByCategory).map(([category, dishes]) => {
+        return (
+          <Box key={category}>
+            <Title order={4} mt="lg">{categoriesNames[category]}</Title>
+            <hr></hr>
+            {view.view !== 'card'
+              ? (
+                  <SimpleGrid cols={3} spacing="sm" mb="xl">
+                    {dishes.map(cardData => (
+                      <RenderCard
+                        key={cardData.id}
+                        cardData={cardData}
+                        onOpenModal={handleOpenModal}
+                      />
+                    ))}
+                  </SimpleGrid>
+                )
+              : (
+                  <Table striped highlightOnHover>
+                    <Table.Tbody>
+                      {dishes.map(cardData => (<RenderTable key={cardData.id} cardData={cardData} onOpenModal={handleOpenModal} />))}
+                    </Table.Tbody>
+                  </Table>
+                )}
+          </Box>
+        )
+      })}
+      {/* {filteredDishes.map(cardData => (
           <RenderCard
             key={cardData.id}
             cardData={cardData}
             onOpenModal={handleOpenModal}
           />
-        ))}
-      </SimpleGrid>
+        ))} */}
     </>
 
   )

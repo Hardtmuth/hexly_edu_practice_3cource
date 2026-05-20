@@ -16,7 +16,6 @@ const CardModal = ({ cardData }) => {
     loading: false,
     added: false,
   })
-  
   const addToCartHandle = (dish) => {
     setButtonState({ loading: true, added: false })
     dispatch(addToCart(dish))
@@ -35,7 +34,7 @@ const CardModal = ({ cardData }) => {
         alt={imgPath}
       />
 
-      <Table mt='lg' variant="vertical" layout="fixed">
+      <Table mt="lg" variant="vertical" layout="fixed">
         <Table.Tbody>
           <Table.Tr>
             <Table.Th w={100}>{t('dishCardModal.compound')}</Table.Th>
@@ -73,10 +72,11 @@ const CardModal = ({ cardData }) => {
           </Table.Tr>
         </Table.Tbody>
       </Table>
-      <Button 
-        color="blue" 
-        fullWidth mt="md" 
-        radius="md" 
+      <Button
+        color="blue"
+        fullWidth
+        mt="md"
+        radius="md"
         onClick={() => addToCartHandle(cardData)}
         loading={buttonState.loading}
         loaderProps={{ type: 'dots' }}

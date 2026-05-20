@@ -1,4 +1,4 @@
-import { Container, Grid, Text, Image, Group, Button } from '@mantine/core'
+import { Container, Grid, Text, Image, Group, Button, Box } from '@mantine/core'
 import { IconMapPin, IconPhone } from '@tabler/icons-react'
 import { DishCards } from './DishCards.jsx'
 
@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next'
 const PRIMARY_COL_HEIGHT = '300px'
 
 const addresses = [
-  { address: 'ТРЦ "Фантастика", ул. Родионова, 187в', phone: 'тел.: +7 (831) 000-00-00'},
-  { address: 'ТРК "Индиго Life", Казанское шоссе, 11', phone: 'тел.: +7 (831) 000-00-01'},
-  { address: 'ТРЦ "Седьмое Небо", ул. Бетанкура, 1', phone: 'тел.: +7 (831) 000-00-99'},
+  { address: 'ТРЦ "Фантастика", ул. Родионова, 187в', phone: 'тел.: +7 (831) 000-00-00' },
+  { address: 'ТРК "Индиго Life", Казанское шоссе, 11', phone: 'тел.: +7 (831) 000-00-01' },
+  { address: 'ТРЦ "Седьмое Небо", ул. Бетанкура, 1', phone: 'тел.: +7 (831) 000-00-99' },
 ]
 
 export const Restoraunts = () => {
@@ -18,7 +18,7 @@ export const Restoraunts = () => {
 
   return (
     <Container>
-      <Text fw={700} my='lg'>{t('restorauntspage.welcome')}</Text>
+      <Text fw={700} my="lg">{t('restorauntspage.welcome')}</Text>
       <Text mb="lg" c="dimmed">{t('restorauntspage.text')}</Text>
       <Grid>
         <Grid.Col span="auto">
@@ -31,13 +31,25 @@ export const Restoraunts = () => {
           />
         </Grid.Col>
         <Grid.Col span={5}>
-          <Text mb='lg' fw={750}>{t('restorauntspage.addresses')}</Text>
-          {addresses.map(a => (
-            <>
-              <Text><IconMapPin stroke={1} size={18} style={{ transform: 'translateY(2px)' }} />{' '}{a.address}</Text>
-              <Text mb='lg'><IconPhone stroke={1} size={18} style={{ transform: 'translateY(2px)' }} />{' '}{a.phone}</Text>
-            </>
-          ))}
+          <Text mb="lg" fw={750}>{t('restorauntspage.addresses')}</Text>
+          {addresses.map((a, i) => {
+            return (
+              <Box key={i}>
+                <Text>
+                  <IconMapPin stroke={1} size={18} style={{ transform: 'translateY(2px)' }} />
+                  {' '}
+                  {a.address}
+                </Text>
+                <Text mb="lg">
+                  <IconPhone stroke={1} size={18} style={{ transform: 'translateY(2px)' }} />
+                  {' '}
+                  {a.phone}
+                </Text>
+              </Box>
+            )
+          },
+          )}
+
         </Grid.Col>
         <Grid.Col span="auto">
           <Image
@@ -49,9 +61,9 @@ export const Restoraunts = () => {
           />
         </Grid.Col>
       </Grid>
-      
+
       <Group justify="center" mt="md">
-        <Button my='lg'>
+        <Button my="lg">
           Забронировать стол
         </Button>
       </Group>

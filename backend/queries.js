@@ -22,7 +22,7 @@ const getDishes = async () => {
     return res.rows
   }
   catch (err) {
-    console.error(`❌ Ошибка получения даннх из представления ${view}}:`, err.stack)
+    console.error(`❌ Ошибка получения даннх из представления dish_cards}:`, err.stack)
   }
 }
 

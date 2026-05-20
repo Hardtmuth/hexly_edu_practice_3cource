@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { Anchor, Box, Burger, Container, Divider, Drawer, Group, ScrollArea, Modal, Tabs, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { MantineLogo } from '@mantinex/mantine-logo'
-import { useNavigate, Link } from 'react-router'
+import { useNavigate, Link, useLocation } from 'react-router'
 import { IconBasket, IconCakeRoll } from '@tabler/icons-react'
 import classes from '../../assets/styles/Header.module.css'
 
@@ -12,9 +12,10 @@ import { SignInForm } from './SignInForm.jsx'
 import { SignUpForm } from './SignUpForm.jsx'
 
 export const Header = () => {
-  const [active, setActive] = useState(0)
+  // const [active, setActive] = useState(0)
   const [opened, { open, close }] = useDisclosure(false)
   const navigate = useNavigate()
+  const location = useLocation()
 
   const { t } = useTranslation()
 
@@ -28,31 +29,72 @@ export const Header = () => {
     { link: '/cart', label: t('mainpage.header.cart') },
   ]
 
-  const mainLinks = [
-    { link: '/', label: t('mainpage.header.breakfast'), category: 'breakfast'},
+  const mainLinks = useMemo(() => [
+    { link: '/', label: t('mainpage.header.breakfast'), category: 'breakfast' },
     { link: '/', label: t('mainpage.header.lunch'), category: 'lunch' },
     { link: '/', label: t('mainpage.header.dinner'), category: 'dinner' },
     { link: '/', label: t('mainpage.header.drinks'), category: 'drinks' },
+    { link: '/', label: t('mainpage.header.businesslunch'), category: 'businesslunch' },
+    { link: '/', label: t('mainpage.header.menu'), category: 'menu' },
+    { link: '/delivery', label: t('mainpage.header.delivery'), category: 'delivery' },
+  ], [t])
 
-    { link: '/', label: t('mainpage.header.businesslunch'), category: 'businesslunch'},
-    { link: '/', label: t('mainpage.header.menu'), category: 'menu'},
-    { link: '/', label: t('mainpage.header.delivery'), category: 'delivery' },
-  ]
+  const currentPath = location.pathname
+  const searchParams = new URLSearchParams(location.search)
+  const currentCategory = searchParams.get('category')
 
-  const mainItems = mainLinks.map((item, index) => (
-    <Anchor
-      key={item.label}
-      className={classes.mainLink}
-      data-active={index === active || undefined}
-      onClick={(event) => {
-        event.preventDefault()
-        setActive(index)
-        navigate(`/?category=${item.category}`)
-      }}
-    >
-      {item.label}
-    </Anchor>
-  ))
+  const computedActive = useMemo(() => {
+    if (currentPath !== '/') {
+      const directMatchIndex = mainLinks.findIndex(link => link.link === currentPath)
+      if (directMatchIndex !== -1) {
+        return directMatchIndex
+      }
+    }
+
+    if (currentPath === '/' && currentCategory) {
+      const categoryMatchIndex = mainLinks.findIndex(
+        link => link.category === currentCategory,
+      )
+      if (categoryMatchIndex !== -1) {
+        return categoryMatchIndex
+      }
+    }
+
+    return -1
+  }, [currentPath, currentCategory, mainLinks])
+
+  const mainItems = mainLinks.map((item, index) => {
+    if (item.link === '/delivery') {
+      return (
+        <Anchor
+          key={item.label}
+          className={classes.mainLink}
+          data-active={index === computedActive || undefined}
+          onClick={(event) => {
+            event.preventDefault()
+            // setActive(index)
+            navigate(item.link)
+          }}
+        >
+          {item.label}
+        </Anchor>
+      )
+    }
+    return (
+      <Anchor
+        key={item.label}
+        className={classes.mainLink}
+        data-active={index === computedActive || undefined}
+        onClick={(event) => {
+          event.preventDefault()
+          // setActive(index)
+          navigate(`/?category=${item.category}`)
+        }}
+      >
+        {item.label}
+      </Anchor>
+    )
+  })
 
   const secondaryItems = userLinks.map((item) => {
     if (item.isModal) {

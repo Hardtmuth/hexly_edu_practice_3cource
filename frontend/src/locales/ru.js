@@ -86,5 +86,5 @@ export default {
     protein: 'Белки',
     fat: 'Жиры',
     carbs: 'Углеводы',
-  }
+  },
 }
