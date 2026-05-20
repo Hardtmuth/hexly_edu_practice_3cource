@@ -1,29 +1,29 @@
 import { IconBrandVk, IconBrandGithubFilled, IconBrandTelegram, IconPhone, IconCakeRoll, IconClock } from '@tabler/icons-react'
-import { ActionIcon, Container, Group, Text } from '@mantine/core'
+import { ActionIcon, Container, Group, Text, Anchor } from '@mantine/core'
 import { MantineLogo } from '@mantinex/mantine-logo'
+import { useNavigate } from 'react-router'
 import classes from '../../assets/styles/Footer.module.css'
 
 import { useTranslation } from 'react-i18next'
 
 export const Footer = () => {
+  const navigate = useNavigate()
   const { t } = useTranslation()
 
   const data = [
     {
       title: t('mainpage.footer.leftSection.title'),
       links: [
-        { label: t('mainpage.footer.leftSection.contacts'), link: '#' },
-        { label: t('mainpage.footer.leftSection.delivery'), link: '#' },
-        { label: t('mainpage.footer.leftSection.addresses'), link: '#' },
-        { label: t('mainpage.footer.leftSection.agreement'), link: '#' },
-
+        { label: t('mainpage.footer.leftSection.delivery'), link: '/delivery' },
+        { label: t('mainpage.footer.leftSection.addresses'), link: '/addresses' },
+        { label: t('mainpage.footer.leftSection.agreement'), link: '/agreement' },
+        { label: 'Правила доставки', link: '/agreement' },
       ],
     },
     {
       title: t('mainpage.footer.rightSection.title'),
       links: [
-        { label: t('mainpage.footer.rightSection.payment'), link: '#' },
-        { label: t('mainpage.footer.rightSection.vacancies'), link: '#' },
+        { label: t('mainpage.footer.rightSection.vacancies'), link: '/vacancies' },
         { label: t('mainpage.footer.rightSection.phone'), link: '#' },
         { label: t('mainpage.footer.rightSection.time'), link: '#' },
         { label: t('mainpage.footer.rightSection.shedule'), link: '#' },
@@ -33,12 +33,15 @@ export const Footer = () => {
 
   const groups = data.map((group) => {
     const links = group.links.map((link, index) => (
-      <Text
+      <Anchor
         key={index}
         className={classes.link}
         component="a"
-        href={link.link}
-        onClick={event => event.preventDefault()}
+        onClick={(event) => {
+          event.preventDefault()
+          // setActive(index)
+          navigate(link.link)
+        }}
       >
         {link.label !== t('mainpage.footer.rightSection.phone')
           ? link.label == t('mainpage.footer.rightSection.time')
@@ -55,7 +58,7 @@ export const Footer = () => {
                 {link.label}
               </>
             )}
-      </Text>
+      </Anchor>
     ))
 
     return (

@@ -9,6 +9,8 @@ import { ManagerPage } from './pages/ManagerPage.jsx'
 import { CartPage } from './pages/CartPage.jsx'
 import { RestorauntsPage } from './pages/RestorauntsPage.jsx'
 import { DeliveryPage } from './pages/DeliveryPage.jsx'
+import { AgreementPage } from './pages/AgreementPage.jsx'
+import { VacanciesPage } from './pages/VacanciesPage.jsx'
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
       <MantineProvider>
         <Routes>
           <Route path="/addresses" element={<RestorauntsPage />} />
+          <Route path="/vacancies" element={<VacanciesPage />} />
+          <Route path="/agreement" element={<AgreementPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/delivery" element={<DeliveryPage />} />
           <Route path="/" element={<MainPage />} />

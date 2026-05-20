@@ -1,4 +1,4 @@
-import { Container, Title, Text, Input, Textarea, Group, SimpleGrid, Checkbox, Anchor, Button } from '@mantine/core'
+import { Container, Title, Text, Input, Textarea, Group, SimpleGrid, Checkbox, Anchor, Button, MaskInput } from '@mantine/core'
 import { isNotEmpty, useForm } from '@mantine/form'
 
 export const Delivery = () => {
@@ -30,7 +30,13 @@ export const Delivery = () => {
             <Input placeholder="15" type="number" w={140}/>
           </Input.Wrapper>
           </Group>
-      
+          <MaskInput
+            mt="lg"
+            label="Номер телефона"
+            mask="+7 (999) 999-99-99"
+            placeholder="+7 (XXX) XXX-XX-XX"
+            withAsterisk
+          />
           <Textarea mt='lg'
             label="Примечание"
             placeholder="Домофон не работает, позвоните я спущусь забрать заказ"
@@ -43,7 +49,7 @@ export const Delivery = () => {
               label={
                 <>
                   Я согласен{' '}
-                  <Anchor href="https://mantine.dev" target="_blank" inherit>
+                  <Anchor href="/agreement" target="_blank" inherit>
                     на обработку своих персональных данных
                   </Anchor>
                 </>
@@ -56,7 +62,7 @@ export const Delivery = () => {
               label={
                 <>
                   Я ознакомлен и согласен{' '}
-                  <Anchor href="https://mantine.dev" target="_blank" inherit>
+                  <Anchor href="/agreement" target="_blank" inherit>
                     с правилами доставки
                   </Anchor>
                 </>
