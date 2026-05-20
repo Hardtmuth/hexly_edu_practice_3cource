@@ -215,3 +215,25 @@ VALUES
     (93, '93.jpg'),
     (94, '94.jpg'),
     (95, '95.jpg');
+
+INSERT INTO users (user_name, role, email, password, phone)
+VALUES
+    (
+        'Сергей Петров',
+        'customer',
+        'qwe@qwe.qw',
+        '$2a$10$w66XG7R61p3Gg6TshR7Y8Oa07.rBmW7.9/Rz7jR3qfH328vXzJ59G', -- хеш от 'password123'
+        '+79209999999'
+    ),
+    (
+        'Андрей Абрамов',
+        'admin',
+        'qwe@qwe.qwe',
+        '$2a$10$w66XG7R61p3Gg6TshR7Y8Oa07.rBmW7.9/Rz7jR3qfH328vXzJ59G',
+        '+79100000000'
+    );
+
+INSERT INTO delivery_methods (method_name, base_cost)
+VALUES
+    ('Самовывоз', 0.00),
+    ('Курьер', 350.00);
