@@ -22,8 +22,9 @@ export const LeadGrid = () => {
         <Text fw={700}>{t('mainpage.welcome')}</Text>
         <ActionIcon variant="default" onClick={toggleView}>
           {view === 'card'
-            ? <IconLayoutGrid size={18} />
-            : <IconListFilled size={18} />}
+            ? <IconListFilled size={18} />
+            : <IconLayoutGrid size={18} />
+          }
         </ActionIcon>
       </Group>
       <Text mb="lg" c="dimmed">{t('mainpage.text')}</Text>

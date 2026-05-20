@@ -12,7 +12,7 @@ import { addToCart } from '../slices/cartSlice.js'
 
 import { CardModal } from './CardModal.jsx'
 
-const RenderCard = ({ cardData, onOpenModal }) => {
+const RenderCard = ({ cardData, onOpenModal, categoryParam}) => {
   const dispatch = useDispatch()
   const basePath = new URL('../../assets/img', import.meta.url).href
   const imgPath = `${basePath}/${cardData.img}`
@@ -21,6 +21,12 @@ const RenderCard = ({ cardData, onOpenModal }) => {
     loading: false,
     added: false,
   })
+
+  const newPrice = categoryParam === 'businesslunch'
+    ? (cardData.price * 0.7).toFixed(2)
+    : cardData.price
+
+  const cardDataWithNewPrice = { ...cardData, price: newPrice }
 
   const addToCartHandle = (dish) => {
     setButtonState({ loading: true, added: false })
@@ -34,23 +40,23 @@ const RenderCard = ({ cardData, onOpenModal }) => {
   }
 
   return (
-    <Box key={cardData.id}>
+    <Box key={cardDataWithNewPrice.id}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section>
           <Image
             src={imgPath}
             height={120}
             alt={cardData.name}
-            onClick={() => onOpenModal(cardData)}
+            onClick={() => onOpenModal(cardDataWithNewPrice)}
           />
         </Card.Section>
 
         <Group justify="space-between" mt="md">
-          <Text fw={500} truncate="end" lineClamp={3}>{cardData.name}</Text>
+          <Text fw={500} truncate="end" lineClamp={3}>{cardDataWithNewPrice.name}</Text>
         </Group>
         <Group justify="space-between">
           <Text size="sm" c="dimmed" truncate="end" lineClamp={3}>
-            {cardData.description}
+            {cardDataWithNewPrice.description}
           </Text>
         </Group>
         <Button
@@ -58,18 +64,18 @@ const RenderCard = ({ cardData, onOpenModal }) => {
           fullWidth
           mt="md"
           radius="md"
-          onClick={() => addToCartHandle(cardData)}
+          onClick={() => addToCartHandle(cardDataWithNewPrice)}
           loading={buttonState.loading}
           loaderProps={{ type: 'dots' }}
         >
-          {buttonState.added ? 'Добавлено' : `${cardData.price} р.`}
+          {buttonState.added ? 'Добавлено' : `${cardDataWithNewPrice.price} р.`}
         </Button>
       </Card>
     </Box>
   )
 }
 
-const RenderTable = ({ cardData, onOpenModal }) => {
+const RenderTable = ({ cardData, onOpenModal, categoryParam }) => {
   const dispatch = useDispatch()
 
   const [buttonState, setButtonState] = useState({
@@ -102,11 +108,22 @@ const RenderTable = ({ cardData, onOpenModal }) => {
         {' '}
         г.
       </Table.Td>
-      <Table.Td>
-        {cardData.price}
-        {' '}
-        р.
-      </Table.Td>
+        {categoryParam === 'businesslunch'
+          ? (
+            <Table.Td>
+              {(cardData.price * 0.7).toFixed(2)}
+              {' '}
+              р.
+            </Table.Td>
+          )
+          : (
+            <Table.Td>
+              {cardData.price}
+              {' '}
+              р.
+            </Table.Td>
+          )
+        }
       <Table.Td>
         <ActionIcon
           variant="default"
@@ -126,6 +143,7 @@ const categoriesMap = {
   lunch: [2, 5, 6],
   dinner: [6, 7, 8],
   drinks: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  businesslunch: [2, 5, 8, 12]
 }
 
 const categoriesNames = {
@@ -151,7 +169,9 @@ const categoriesNames = {
   20: 'Кофе',
 }
 
-const DishCards = (view) => {
+const businesslunchDishesId = [8, 13, 39 ,28, 29, 30, 42, 43, 44, 62, 61]
+
+const DishCards = (view = { view: 'card' }) => {
   // console.log('view is: ', view)
   const dispatch = useDispatch()
   // const dishes = useSelector(dishesSelectors.selectEntities)
@@ -162,13 +182,19 @@ const DishCards = (view) => {
   // console.log('cart is: ', cart)
 
   const [searchParams] = useSearchParams()
-  const category = searchParams.get('category')
+  const categoryParam = searchParams.get('category')
   // console.log(category)
 
-  const filteredDishes = (category && !['businesslunch', 'menu', 'delivery'].includes(category))
-    ? dishesList.filter((dish) => {
+  const businessDishes = dishesList.filter(dish => businesslunchDishesId.includes(dish.id))
+
+  const filteredDishes = (categoryParam && categoryParam !== 'menu')
+    ? (categoryParam && categoryParam === 'businesslunch')
+      ? businessDishes.filter((dish) => {
+          return categoriesMap[categoryParam].includes(dish.category)
+        })
+      : dishesList.filter((dish) => {
       // console.log(dish.category, categoriesMap[category], categoriesMap[category].includes(dish.category))
-        return categoriesMap[category].includes(dish.category)
+        return categoriesMap[categoryParam].includes(dish.category)
       })
     : dishesList
 
@@ -200,12 +226,23 @@ const DishCards = (view) => {
         {selectedCard && <CardModal cardData={selectedCard} />}
       </Modal>
 
+      {categoryParam === 'businesslunch'
+        ? (
+          <>
+            <hr></hr>
+            <Title order={4}>Сегодня у нас в бизнес меню:</Title>
+            <Text c="dimmed" fs="italic"><sup>*</sup> Бизнес меню дествует по будням с 12:00 до 15:00. В этот период времени стоимость блюд по акации выгоднее на 30%. Вы можете выбрать одно блюдо из любой категории</Text>
+          </>
+        )
+        : <></>
+      }
+
       {Object.entries(dishesByCategory).map(([category, dishes]) => {
         return (
           <Box key={category}>
             <Title order={4} mt="lg">{categoriesNames[category]}</Title>
             <hr></hr>
-            {view.view !== 'card'
+            {view.view === 'card'
               ? (
                   <SimpleGrid cols={3} spacing="sm" mb="xl">
                     {dishes.map(cardData => (
@@ -213,6 +250,7 @@ const DishCards = (view) => {
                         key={cardData.id}
                         cardData={cardData}
                         onOpenModal={handleOpenModal}
+                        categoryParam={categoryParam}
                       />
                     ))}
                   </SimpleGrid>
@@ -220,7 +258,7 @@ const DishCards = (view) => {
               : (
                   <Table striped highlightOnHover>
                     <Table.Tbody>
-                      {dishes.map(cardData => (<RenderTable key={cardData.id} cardData={cardData} onOpenModal={handleOpenModal} />))}
+                      {dishes.map(cardData => (<RenderTable key={cardData.id} cardData={cardData} categoryParam={categoryParam} onOpenModal={handleOpenModal} />))}
                     </Table.Tbody>
                   </Table>
                 )}
