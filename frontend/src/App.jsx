@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '@mantine/core/styles.css'
 import { MantineProvider } from '@mantine/core'
-import { BrowserRouter, Routes, Route, Link } from 'react-router'
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router'
 
 import { MainPage } from './pages/MainPage.jsx'
 import { UserPage } from './pages/UserPage.jsx'
@@ -12,8 +12,39 @@ import { DeliveryPage } from './pages/DeliveryPage.jsx'
 import { AgreementPage } from './pages/AgreementPage.jsx'
 import { VacanciesPage } from './pages/VacanciesPage.jsx'
 
+import AuthContext from './contexts/index.js'
+import useAuth from './hooks/index.js'
+
+const AuthProvider = ({ children }) => {
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  const logIn = () => setLoggedIn(true)
+  const logOut = () => {
+    localStorage.removeItem('userId')
+    setLoggedIn(false)
+  }
+
+  return (
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth()
+  const location = useLocation()
+
+  return (
+    auth.loggedIn ? children : <Navigate to="/" state={{ from: location }} />
+  )
+}
+
 const App = () => {
   return (
+    <AuthProvider>
+
+
     <BrowserRouter>
       <MantineProvider>
         <Routes>
@@ -23,11 +54,19 @@ const App = () => {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/delivery" element={<DeliveryPage />} />
           <Route path="/" element={<MainPage />} />
-          <Route path="/user" element={<UserPage />} />
+          <Route 
+            path="/user"
+            element={
+              <PrivateRoute>
+                <UserPage />
+              </PrivateRoute>
+            } 
+          />
           <Route path="/manager" element={<ManagerPage />} />
         </Routes>
       </MantineProvider>
     </BrowserRouter>
+    </AuthProvider>
   )
 }
 

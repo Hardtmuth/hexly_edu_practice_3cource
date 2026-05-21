@@ -1,18 +1,52 @@
-import { Input, PasswordInput, Button } from '@mantine/core'
+import { TextInput, PasswordInput, Button } from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
+import { useForm, isNotEmpty, hasLength, isEmail } from '@mantine/form'
 
 export const SignInForm = () => {
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      email: '',
+      password: '',
+    },
+
+    validate: {
+      email: isEmail('Некорректный email'),
+      password: (value) => {
+        const emptyCheck = isNotEmpty('Пароль не может быть пустым')(value)
+        const lengthCheck = hasLength({ min: 6, max: 20 }, 'Пароль должен быть от 6 до 20 символов')(value)
+        
+        if (emptyCheck) return emptyCheck
+        if (lengthCheck) return lengthCheck
+        return null
+      }
+    },
+  })
+
   const { t } = useTranslation()
   return (
-    <>
-      <Input.Wrapper mt="md" error="">
-        <Input placeholder={t('mainpage.signform.email')} rightSection={<IconAt size={16} />} />
-      </Input.Wrapper>
-      <PasswordInput mt="md" error="" placeholder={t('mainpage.signform.password')} />
-      <Button mt="md" fullWidth>
+    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <TextInput 
+        mt="md"
+        placeholder={t('mainpage.signform.email')}
+        rightSection={<IconAt size={16} />}
+        key={form.key('email')}
+        {...form.getInputProps('email')}
+      />
+      <PasswordInput 
+        mt="md" 
+        placeholder={t('mainpage.signform.password')}
+        key={form.key('password')}
+        {...form.getInputProps('password')}
+      />
+      <Button 
+        mt="md" 
+        fullWidth
+        type="submit"
+      >
         {t('mainpage.signform.signinBtn')}
       </Button>
-    </>
+    </form>
   )
 }
