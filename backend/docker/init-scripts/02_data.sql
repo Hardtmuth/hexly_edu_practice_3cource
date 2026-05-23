@@ -222,14 +222,14 @@ VALUES
         'Сергей Петров',
         'customer',
         'qwe@qwe.qw',
-        '$2a$10$w66XG7R61p3Gg6TshR7Y8Oa07.rBmW7.9/Rz7jR3qfH328vXzJ59G', -- хеш от 'password123'
+        '$2a$12$KIwREjAKtvjYDTUhiRViquf0mx/6NbNJqHLS0BxUaMqfQHONjzpSK', -- хеш от 'password123'
         '+79209999999'
     ),
     (
         'Андрей Абрамов',
         'admin',
         'qwe@qwe.qwe',
-        '$2a$10$w66XG7R61p3Gg6TshR7Y8Oa07.rBmW7.9/Rz7jR3qfH328vXzJ59G',
+        '$2a$12$KIwREjAKtvjYDTUhiRViquf0mx/6NbNJqHLS0BxUaMqfQHONjzpSK',
         '+79100000000'
     );
 

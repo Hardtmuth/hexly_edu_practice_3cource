@@ -1,10 +1,29 @@
 import { TextInput, PasswordInput, Button } from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
+import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useForm, isNotEmpty, hasLength, isEmail } from '@mantine/form'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../slices/authSlice.js'
+
 export const SignInForm = () => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { loading, error } = useSelector((state) => state.auth)
+
+  const handleSubmit = (values) => {
+    dispatch(login(values))
+      .unwrap()
+      .then(() => {
+        console.log('Успешная авторизация')
+        navigate('/user')
+      })
+      .catch((errorMsg) => {
+        console.error('Ошибка:', errorMsg)
+      })
+  }
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -26,7 +45,7 @@ export const SignInForm = () => {
   })
 
   return (
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+    <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <TextInput 
         mt="md"
         placeholder={t('mainpage.signform.email')}

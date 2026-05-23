@@ -12,10 +12,12 @@ import { DeliveryPage } from './pages/DeliveryPage.jsx'
 import { AgreementPage } from './pages/AgreementPage.jsx'
 import { VacanciesPage } from './pages/VacanciesPage.jsx'
 
-import AuthContext from './contexts/index.js'
-import useAuth from './hooks/index.js'
+import { PrivateRoute } from './components/PrivateRoute.jsx'
 
-const AuthProvider = ({ children }) => {
+// import AuthContext from './contexts/index.js'
+// import useAuth from './hooks/index.js'
+
+/* const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false)
 
   const logIn = () => setLoggedIn(true)
@@ -29,21 +31,19 @@ const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   )
-}
+} */
 
-const PrivateRoute = ({ children }) => {
+/* const PrivateRoute = ({ children }) => {
   const auth = useAuth()
   const location = useLocation()
 
   return (
     auth.loggedIn ? children : <Navigate to="/" state={{ from: location }} />
   )
-}
+} */
 
 const App = () => {
   return (
-    <AuthProvider>
-
 
     <BrowserRouter>
       <MantineProvider>
@@ -54,7 +54,7 @@ const App = () => {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/delivery" element={<DeliveryPage />} />
           <Route path="/" element={<MainPage />} />
-          <Route 
+          <Route
             path="/user"
             element={
               <PrivateRoute>
@@ -66,7 +66,7 @@ const App = () => {
         </Routes>
       </MantineProvider>
     </BrowserRouter>
-    </AuthProvider>
+
   )
 }
 
