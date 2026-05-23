@@ -6,15 +6,15 @@ import { useTranslation } from 'react-i18next'
 
 const PRIMARY_COL_HEIGHT = '300px'
 
-const addresses = [
-  { address: 'ТРЦ "Фантастика", ул. Родионова, 187в', phone: 'тел.: +7 (831) 000-00-00' },
-  { address: 'ТРК "Индиго Life", Казанское шоссе, 11', phone: 'тел.: +7 (831) 000-00-01' },
-  { address: 'ТРЦ "Седьмое Небо", ул. Бетанкура, 1', phone: 'тел.: +7 (831) 000-00-99' },
-]
-
 export const Restoraunts = () => {
   const { t } = useTranslation()
   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`
+
+  const addresses = [
+    { address: t('restorauntspage.address1'), phone: t('restorauntspage.phone1') },
+    { address: t('restorauntspage.address2'), phone: t('restorauntspage.phone2') },
+    { address: t('restorauntspage.address3'), phone: t('restorauntspage.phone3') },
+  ]
 
   return (
     <Container>
@@ -64,7 +64,7 @@ export const Restoraunts = () => {
 
       <Group justify="center" mt="md">
         <Button my="lg">
-          Забронировать стол
+          {t('restorauntspage.btn')}
         </Button>
       </Group>
     </Container>

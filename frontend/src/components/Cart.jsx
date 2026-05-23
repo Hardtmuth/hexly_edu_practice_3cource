@@ -38,7 +38,7 @@ export const Cart = () => {
             </Button>
           </Button.Group>
         </Table.Td>
-        <Table.Td>{`${item.price * item.count}.00 р.`}</Table.Td>
+        <Table.Td>{`${(item.price * item.count).toFixed(2)} ${t('cartpage.currency')}`}</Table.Td>
       </Table.Tr>
     )
   },
@@ -79,7 +79,7 @@ export const Cart = () => {
                   <Table.Tbody>{rows}</Table.Tbody>
                 </Table>
                 <Group justify="end" mt="md">
-                  <Text fw={750}>{`${t('cartpage.totalPrice')} ${totalPrice} ${t('cartpage.currency')}`}</Text>
+                  <Text fw={750}>{`${t('cartpage.totalPrice')} ${(totalPrice).toFixed(2)} ${t('cartpage.currency')}`}</Text>
                   <Button onClick={() => handleOpenModal()}>{t('cartpage.order')}</Button>
                 </Group>
               </>

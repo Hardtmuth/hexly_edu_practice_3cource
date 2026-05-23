@@ -1,10 +1,13 @@
-import { Title, Text, Image, Container, Grid, List } from "@mantine/core";
+import { Title, Text, Image, Container, Grid, List } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 
 export const Vacancies = () => {
+  const { t } = useTranslation()
+
   return (
     <Container>
-      <Title order={3}>Вакансии</Title>
-      <Text mt="lg">К нам в команду требуются:</Text>
+      <Title order={3}>{t('vacanciespage.title')}</Title>
+      <Text mt="lg">{t('vacanciespage.text')}</Text>
       <Grid>
         <Grid.Col span="auto">
           <Image
@@ -18,24 +21,24 @@ export const Vacancies = () => {
         </Grid.Col>
         <Grid.Col span={5}>
           <List mt='lg'>
-            <List.Item>Повара</List.Item>
-            <List.Item>Официанты</List.Item>
-            <List.Item>Управляющий</List.Item>
-            <List.Item>Курьеры</List.Item>
+            <List.Item>{t('vacanciespage.vacancies.vacance1')}</List.Item>
+            <List.Item>{t('vacanciespage.vacancies.vacance2')}</List.Item>
+            <List.Item>{t('vacanciespage.vacancies.vacance3')}</List.Item>
+            <List.Item>{t('vacanciespage.vacancies.vacance4')}</List.Item>
           </List>
           <Text fw={750} mt='lg'>
-            Наше предложение:
+            {t('vacanciespage.offer.title')}
           </Text>
           <List>
-            <List.Item>Опыт работы: не требуется (мы всему научим)</List.Item>
-            <List.Item>Полная занятость</List.Item>
-            <List.Item>График: 2/2</List.Item>
-            <List.Item>Рабочие часы: 10, 11 или 12</List.Item>
-            <List.Item>Формат работы: на месте работодателя</List.Item>
-            <List.Item>Оформление: Трудовой договор</List.Item>
+            <List.Item>{t('vacanciespage.offer.item1')}</List.Item>
+            <List.Item>{t('vacanciespage.offer.item2')}</List.Item>
+            <List.Item>{t('vacanciespage.offer.item3')}</List.Item>
+            <List.Item>{t('vacanciespage.offer.item4')}</List.Item>
+            <List.Item>{t('vacanciespage.offer.item5')}</List.Item>
+            <List.Item>{t('vacanciespage.offer.item6')}</List.Item>
           </List>
           <Text fw={750} mt='lg'>
-            Телефон для связи: +7 (831) 452-00-20
+            {t('vacanciespage.phone')}
           </Text>
         </Grid.Col>
         <Grid.Col span="auto">

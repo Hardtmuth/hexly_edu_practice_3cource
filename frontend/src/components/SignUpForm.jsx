@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useForm, isNotEmpty, hasLength, isEmail, matchesField } from '@mantine/form'
 
 export const SignUpForm = () => {
+  const { t } = useTranslation()
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -16,49 +18,44 @@ export const SignUpForm = () => {
 
     validate: {
       username: (value) => {
-        const emptyCheck = isNotEmpty('Имя пользователя не может быть пустым')(value)
-        const lengthCheck = hasLength({ min: 3, max: 20 }, 'Имя пользователя должно быть от 3 до 20 символов')(value)
-        
+        const emptyCheck = isNotEmpty(t('mainpage.signform.errors.usernameEmpty'))(value)
+        const lengthCheck = hasLength({ min: 3, max: 20 }, t('mainpage.signform.errors.usernameLength'))(value)
         if (emptyCheck) return emptyCheck
         if (lengthCheck) return lengthCheck
         return null
       },
-      email: isEmail('Некорректный email'),
+      email: isEmail(t('mainpage.signform.errors.email')),
       phone: (value) => {
-        const emptyCheck = isNotEmpty('Телефон не может быть пустым')(value)
-        const lengthCheck = hasLength(10, 'Недостаточно символов')(value)
-        
+        const emptyCheck = isNotEmpty(t('mainpage.signform.errors.phoneEmpty'))(value)
+        const lengthCheck = hasLength(10, t('mainpage.signform.errors.phoneLength'))(value)
         if (emptyCheck) return emptyCheck
         if (lengthCheck) return lengthCheck
         return null
       },
       password: (value) => {
-        const emptyCheck = isNotEmpty('Пароль не может быть пустым')(value)
-        const lengthCheck = hasLength({ min: 6, max: 20 }, 'Пароль должен быть от 6 до 20 символов')(value)
-        
+        const emptyCheck = isNotEmpty(t('mainpage.signform.errors.passwordEmpty'))(value)
+        const lengthCheck = hasLength({ min: 6, max: 20 }, t('mainpage.signform.errors.passwordLength'))(value)
         if (emptyCheck) return emptyCheck
         if (lengthCheck) return lengthCheck
         return null
       },
       passwordConfirmation: matchesField(
         'password',
-        'Подтерждение пароля не совпадает с введенным паролем'
+        t('mainpage.signform.errors.passwordConfirm')
       ),
     },
   })
 
-  const { t } = useTranslation()
-
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>
-      <TextInput 
-        mt="lg" 
+      <TextInput
+        mt="lg"
         placeholder={t('mainpage.signform.username')}
         key={form.key('username')}
         {...form.getInputProps('username')}
       />
-      <TextInput 
-        mt="lg" 
+      <TextInput
+        mt="lg"
         placeholder={t('mainpage.signform.email')}
         rightSection={<IconAt size={16} />}
         key={form.key('email')}
@@ -68,7 +65,7 @@ export const SignUpForm = () => {
         mt="lg"
         mask="+7 (999) 999-99-99"
         placeholder={t('mainpage.signform.phone')}
-        /* key={form.key('phone')}  -- !!! need to fix */ 
+        /* key={form.key('phone')}  -- !!! need to fix */
         /* defaultValue={form.getValues().phone} */
         onChangeRaw={(raw) => form.setFieldValue('phone', raw)}
         /* {...form.getInputProps('phone')} */

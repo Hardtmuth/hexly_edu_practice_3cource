@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useForm, isNotEmpty, hasLength, isEmail } from '@mantine/form'
 
 export const SignInForm = () => {
+  const { t } = useTranslation()
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -12,11 +14,10 @@ export const SignInForm = () => {
     },
 
     validate: {
-      email: isEmail('Некорректный email'),
+      email: isEmail(t('mainpage.signform.errors.email')),
       password: (value) => {
-        const emptyCheck = isNotEmpty('Пароль не может быть пустым')(value)
-        const lengthCheck = hasLength({ min: 6, max: 20 }, 'Пароль должен быть от 6 до 20 символов')(value)
-        
+        const emptyCheck = isNotEmpty(t('mainpage.signform.errors.passwordEmpty'))(value)
+        const lengthCheck = hasLength({ min: 6, max: 20 }, (t('mainpage.signform.errors.passwordLength')))(value)
         if (emptyCheck) return emptyCheck
         if (lengthCheck) return lengthCheck
         return null
@@ -24,7 +25,6 @@ export const SignInForm = () => {
     },
   })
 
-  const { t } = useTranslation()
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>
       <TextInput 

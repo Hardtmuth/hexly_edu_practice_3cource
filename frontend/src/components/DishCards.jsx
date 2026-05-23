@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router'
 
+import { useTranslation } from 'react-i18next'
+
 import { fetchDishes, dishesSelectors } from '../slices/dishesSlice.js'
 import { addToCart } from '../slices/cartSlice.js'
 
@@ -14,6 +16,7 @@ import { CardModal } from './CardModal.jsx'
 
 const RenderCard = ({ cardData, onOpenModal, categoryParam}) => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const basePath = new URL('../../assets/img', import.meta.url).href
   const imgPath = `${basePath}/${cardData.img}`
 
@@ -68,7 +71,7 @@ const RenderCard = ({ cardData, onOpenModal, categoryParam}) => {
           loading={buttonState.loading}
           loaderProps={{ type: 'dots' }}
         >
-          {buttonState.added ? 'Добавлено' : `${cardDataWithNewPrice.price} р.`}
+          {buttonState.added ? t('mainpage.card.btnAdded') : `${cardDataWithNewPrice.price} р.`}
         </Button>
       </Card>
     </Box>
@@ -77,6 +80,7 @@ const RenderCard = ({ cardData, onOpenModal, categoryParam}) => {
 
 const RenderTable = ({ cardData, onOpenModal, categoryParam }) => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const [buttonState, setButtonState] = useState({
     loading: false,
@@ -106,21 +110,21 @@ const RenderTable = ({ cardData, onOpenModal, categoryParam }) => {
       <Table.Td>
         {cardData.weight}
         {' '}
-        г.
+        {t('dishCardModal.unit')}
       </Table.Td>
         {categoryParam === 'businesslunch'
           ? (
             <Table.Td>
               {(cardData.price * 0.7).toFixed(2)}
               {' '}
-              р.
+              {t('dishCardModal.currency')}
             </Table.Td>
           )
           : (
             <Table.Td>
               {cardData.price}
               {' '}
-              р.
+              {t('dishCardModal.currency')}
             </Table.Td>
           )
         }
@@ -174,6 +178,7 @@ const businesslunchDishesId = [8, 13, 39 ,28, 29, 30, 42, 43, 44, 62, 61]
 const DishCards = (view = { view: 'card' }) => {
   // console.log('view is: ', view)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   // const dishes = useSelector(dishesSelectors.selectEntities)
   const dishesIds = useSelector(dishesSelectors.selectIds)
   const dishesEntities = useSelector(dishesSelectors.selectEntities)
@@ -230,8 +235,8 @@ const DishCards = (view = { view: 'card' }) => {
         ? (
           <>
             <hr></hr>
-            <Title order={4}>Сегодня у нас в бизнес меню:</Title>
-            <Text c="dimmed" fs="italic"><sup>*</sup> Бизнес меню дествует по будням с 12:00 до 15:00. В этот период времени стоимость блюд по акации выгоднее на 30%. Вы можете выбрать одно блюдо из любой категории</Text>
+            <Title order={4}>{t('mainpage.businessTitle')}</Title>
+            <Text c="dimmed" fs="italic"><sup>*</sup>{t('mainpage.businessText')}</Text>
           </>
         )
         : <></>

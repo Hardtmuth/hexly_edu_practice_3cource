@@ -81,7 +81,7 @@ const CardModal = ({ cardData }) => {
         loading={buttonState.loading}
         loaderProps={{ type: 'dots' }}
       >
-        {buttonState.added ? 'Добавлено' : 'Добавить в заказ'}
+        {buttonState.added ? t('dishCardModal.btnAdded') : t('dishCardModal.btnAdd')}
       </Button>
     </>
   )

@@ -1,56 +1,91 @@
-import { Container, Title, Text, Input, Textarea, Group, SimpleGrid, Checkbox, Anchor, Button, MaskInput } from '@mantine/core'
+import { Container, Title, Text, TextInput,Input, Textarea, Group, SimpleGrid, Checkbox, Anchor, Button, MaskInput } from '@mantine/core'
 import { isNotEmpty, useForm } from '@mantine/form'
+import { useTranslation } from 'react-i18next'
 
 export const Delivery = () => {
+  const { t } = useTranslation()
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: { terms: false, rules: false },
     validate: {
-      terms: isNotEmpty('Вы должны принять соглашение на обработку персональных данных'),
-      rules: isNotEmpty('Вы должны ознакомиться и принять правила доставки'),
+      street: isNotEmpty(t('deliverypage.form.errors.street')),
+      house: isNotEmpty(t('deliverypage.form.errors.house')),
+      phone: isNotEmpty(t('deliverypage.form.errors.phone')),
+      terms: isNotEmpty(t('deliverypage.form.errors.terms')),
+      rules: isNotEmpty(t('deliverypage.form.errors.rules')),
     },
   })
   return (
     <Container>
       <SimpleGrid cols={2}>
         <div>
-          <Title order={3}>Введите адрес доставки</Title>
-          <Text c="dimmed">На данный моменты мы осуществляем доставку только в городе Нижний Новгород</Text>
-          <Input.Wrapper label="Улица" withAsterisk mt='lg'>
-            <Input placeholder="ул. Рождественская" />
-          </Input.Wrapper>
+          <Title order={3}>{t('deliverypage.title')}</Title>
+          <Text c="dimmed">{t('deliverypage.text')}</Text>
+          <TextInput
+            label={t('deliverypage.form.labels.street')}
+            withAsterisk
+            mt='lg'
+            placeholder={t('deliverypage.form.placeholders.street')}
+            key={form.key('street')}
+            {...form.getInputProps('street')}
+          />
           <Group>
-            <Input.Wrapper label="Дом" withAsterisk mt='lg'>
-            <Input placeholder="122" type="number" w={140}/>
-          </Input.Wrapper>
-          <Input.Wrapper label="Подъезд" mt='lg'>
-            <Input placeholder="1" type="number" w={140}/>
-          </Input.Wrapper>
-          <Input.Wrapper label="Квартира" mt='lg'>
-            <Input placeholder="15" type="number" w={140}/>
-          </Input.Wrapper>
+            <TextInput
+              label={t('deliverypage.form.labels.house')}
+              withAsterisk
+              mt='lg'
+              placeholder={t('deliverypage.form.placeholders.house')}
+              key={form.key('house')}
+              {...form.getInputProps('house')}
+              type="number"
+              w={140}
+            />
+            <TextInput
+              label={t('deliverypage.form.labels.entrance')}
+              mt='lg'
+              placeholder={t('deliverypage.form.placeholders.entrance')}
+              key={form.key('entrance')}
+              {...form.getInputProps('entrance')}
+              type="number"
+              w={140}
+            />
+            <TextInput
+              label={t('deliverypage.form.labels.apartments')}
+              mt='lg'
+              placeholder={t('deliverypage.form.placeholders.apartments')}
+              key={form.key('apartments')}
+              {...form.getInputProps('apartments')}
+              type="number"
+              w={140}
+            />
           </Group>
           <MaskInput
             mt="lg"
-            label="Номер телефона"
+            label={t('deliverypage.form.labels.phone')}
             mask="+7 (999) 999-99-99"
-            placeholder="+7 (XXX) XXX-XX-XX"
+            placeholder={t('deliverypage.form.placeholders.phone')}
             withAsterisk
+            /* key={form.key('phone')}
+            {...form.getInputProps('phone')} */
+            onChangeRaw={(raw) => form.setFieldValue('phone', raw)}
           />
           <Textarea mt='lg'
-            label="Примечание"
-            placeholder="Домофон не работает, позвоните я спущусь забрать заказ"
+            label={t('deliverypage.form.labels.description')}
+            placeholder={t('deliverypage.form.placeholders.description')}
             autosize
             minRows={5}
+            key={form.key('description')}
+            {...form.getInputProps('description')}
           />
-          <form onSubmit={form.onSubmit((values) => console.log(values))}> {/* FIX - Сделать всю форму контролируемой */}
+          <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <Checkbox
               mt='lg'
               label={
                 <>
-                  Я согласен{' '}
+                 {t('deliverypage.form.labels.terms')}{' '}
                   <Anchor href="/agreement" target="_blank" inherit>
-                    на обработку своих персональных данных
+                    {t('deliverypage.form.labels.termsLink')}
                   </Anchor>
                 </>
               }
@@ -61,9 +96,9 @@ export const Delivery = () => {
               mt='lg'
               label={
                 <>
-                  Я ознакомлен и согласен{' '}
+                  {t('deliverypage.form.labels.rules')}{' '}
                   <Anchor href="/agreement" target="_blank" inherit>
-                    с правилами доставки
+                    {t('deliverypage.form.labels.rulesLink')}
                   </Anchor>
                 </>
               }
@@ -72,11 +107,10 @@ export const Delivery = () => {
             />
 
             <Button type="submit" mt="md">
-              Оформить заказ на доставку
+              {t('deliverypage.form.labels.btn')}
             </Button>
-      </form>
-      </div>
-      
+          </form>
+        </div>
       </SimpleGrid>
     </Container>
   )

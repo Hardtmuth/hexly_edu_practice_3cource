@@ -1,13 +1,13 @@
 import { Title, Text, Image, Container } from '@mantine/core'
+import { useTranslation } from 'react-i18next'
 
 export const Agreement = () => {
+  const { t } = useTranslation()
   return (
     <Container>
-      <Title order={3}>Согласие на обработку персональных данных</Title>
+      <Title order={3}>{t('agreementpage.title')}</Title>
       <Text mt='lg'>
-        Тут должен быть огромный текст согласия на обработку персональных данный и правил доставки сервиса, 
-        но так как этот проэкт является учебным, я не храню и не обрабатываю ваши персональные данные
-        поэтому держите картинку котика
+        {t('agreementpage.text')}
       </Text>
       <Image
         mt='lg'
