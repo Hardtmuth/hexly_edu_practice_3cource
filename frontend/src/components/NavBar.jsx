@@ -1,35 +1,64 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { IconUserCircle, IconHistory, IconLogout, IconTruckDelivery, IconRosetteDiscount, IconHelp} from '@tabler/icons-react'
 import { Code, Group } from '@mantine/core'
-import { useNavigate } from 'react-router'
+import { useNavigate, Link, useLocation } from 'react-router'
 import classes from '../../assets/styles/Navbar.module.css'
 
-const data = [
-  { link: '', label: 'Профиль', icon: IconUserCircle },
-  { link: '', label: 'История заказов', icon: IconHistory },
-  { link: '', label: 'Аареса доставки', icon: IconTruckDelivery },
-  { link: '', label: 'Скидки и Акции', icon: IconRosetteDiscount },
-  { link: '', label: 'Помощь', icon: IconHelp },
-]
 
 export const Navbar = () => {
-  const [active, setActive] = useState('Billing')
+  const [active, setActive] = useState('Профиль')
   const navigate = useNavigate()
-  const links = data.map(item => (
+  const location = useLocation()
+
+  const currentPath = location.pathname
+  const searchParams = new URLSearchParams(location.search)
+  const currentCategory = searchParams.get('select')
+
+  const data = useMemo(() => [
+  { link: '/user', label: 'Профиль', icon: IconUserCircle, select: 'profile' },
+  { link: '/user', label: 'История заказов', icon: IconHistory, select: 'history' },
+  { link: '/user', label: 'Аареса доставки', icon: IconTruckDelivery, select: 'addresses' },
+  { link: '/user', label: 'Скидки и Акции', icon: IconRosetteDiscount, select: 'discounts' },
+  { link: '/user', label: 'Помощь', icon: IconHelp, select: 'help' },
+  ], [])
+
+  const computedActive = useMemo(() => {
+    if (currentPath !== '/user') {
+      const directMatchIndex = data.findIndex(link => link.link === currentPath)
+      if (directMatchIndex !== -1) {
+        return directMatchIndex
+      }
+    }
+
+    if (currentPath === '/user' && currentCategory) {
+      const categoryMatchIndex = data.findIndex(
+        link => link.select === currentCategory,
+      )
+      if (categoryMatchIndex !== -1) {
+        return categoryMatchIndex
+      }
+    }
+
+    return -1
+  }, [currentPath, currentCategory, data])
+
+  const links = data.map((item, index) => {
+    return (
     <a
       className={classes.link}
-      data-active={item.label === active || undefined}
+      data-active={index === computedActive || undefined}
       href={item.link}
       key={item.label}
       onClick={(event) => {
-        event.preventDefault()
-        setActive(item.label)
-      }}
+          event.preventDefault()
+          // setActive(index)
+          navigate(`/user?select=${item.select}`)
+        }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
     </a>
-  ))
+  )})
 
   return (
     <nav className={classes.navbar}>

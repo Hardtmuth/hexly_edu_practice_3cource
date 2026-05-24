@@ -20,7 +20,7 @@ export const Profile = () => {
   const { t } = useTranslation()
   return (
     <>
-      <SimpleGrid cols={3}>
+      <SimpleGrid cols={2}>
         <div>
           <Text>Привет, {firstName}</Text>
         <Table variant="vertical" layout="fixed" withTableBorder mt='lg'>

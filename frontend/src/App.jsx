@@ -60,7 +60,7 @@ const App = () => {
               <PrivateRoute>
                 <UserPage />
               </PrivateRoute>
-            } 
+            }
           />
           <Route path="/manager" element={<ManagerPage />} />
         </Routes>
