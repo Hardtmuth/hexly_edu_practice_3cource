@@ -1,32 +1,20 @@
 import { useState } from 'react'
-import {
-  Icon2fa,
-  IconBellRinging,
-  IconDatabaseImport,
-  IconFingerprint,
-  IconKey,
-  IconLogout,
-  IconReceipt2,
-  IconSettings,
-  IconSwitchHorizontal,
-} from '@tabler/icons-react'
+import { IconUserCircle, IconHistory, IconLogout, IconTruckDelivery, IconRosetteDiscount, IconHelp} from '@tabler/icons-react'
 import { Code, Group } from '@mantine/core'
-import { MantineLogo } from '@mantinex/mantine-logo'
+import { useNavigate } from 'react-router'
 import classes from '../../assets/styles/Navbar.module.css'
 
 const data = [
-  { link: '', label: 'Notifications', icon: IconBellRinging },
-  { link: '', label: 'Billing', icon: IconReceipt2 },
-  { link: '', label: 'Security', icon: IconFingerprint },
-  { link: '', label: 'SSH Keys', icon: IconKey },
-  { link: '', label: 'Databases', icon: IconDatabaseImport },
-  { link: '', label: 'Authentication', icon: Icon2fa },
-  { link: '', label: 'Other Settings', icon: IconSettings },
+  { link: '', label: 'Профиль', icon: IconUserCircle },
+  { link: '', label: 'История заказов', icon: IconHistory },
+  { link: '', label: 'Аареса доставки', icon: IconTruckDelivery },
+  { link: '', label: 'Скидки и Акции', icon: IconRosetteDiscount },
+  { link: '', label: 'Помощь', icon: IconHelp },
 ]
 
 export const Navbar = () => {
   const [active, setActive] = useState('Billing')
-
+  const navigate = useNavigate()
   const links = data.map(item => (
     <a
       className={classes.link}
@@ -49,13 +37,9 @@ export const Navbar = () => {
         {links}
       </div>
       <div className={classes.footer}>
-        <a href="#" className={classes.link} onClick={event => event.preventDefault()}>
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
-        <a href="#" className={classes.link} onClick={event => event.preventDefault()}>
+        <a href="#" className={classes.link} onClick={() => navigate('/')}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
+          <span>Выход</span>
         </a>
       </div>
     </nav>

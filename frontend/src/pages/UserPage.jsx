@@ -4,13 +4,13 @@ import { useDisclosure } from '@mantine/hooks'
 import { AuthHeader } from '../components/AuthHeader.jsx'
 import { Navbar } from '../components/NavBar.jsx'
 import { LeadGrid } from '../components/LeadGrid.jsx'
+import { Profile } from '../components/Profile.jsx'
 
 import { useSelector } from 'react-redux'
 
 export const UserPage = () => {
   const [opened] = useDisclosure()
   const user = useSelector((state) => state.auth.user)
-  console.log(user)
 
   return (
     <AppShell
@@ -31,9 +31,7 @@ export const UserPage = () => {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <h1>User Page</h1>
-        <p>Hello {user.name}</p>
-        <LeadGrid />
+        <Profile />
       </AppShell.Main>
 
     </AppShell>

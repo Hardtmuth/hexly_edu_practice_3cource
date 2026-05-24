@@ -58,7 +58,8 @@ const server = () => {
           id: user.user_id,
           name: user.user_name,
           role: user.role,
-          email: user.email
+          email: user.email,
+          phone: user.phone
         }
       })
     } catch (error) {

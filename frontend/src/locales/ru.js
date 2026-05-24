@@ -1,5 +1,3 @@
-import { rule } from "postcss";
-
 export default {
   mainpage: {
     brand: 'Кафе Нокталия',

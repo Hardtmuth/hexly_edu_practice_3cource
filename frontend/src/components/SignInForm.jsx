@@ -1,4 +1,4 @@
-import { TextInput, PasswordInput, Button } from '@mantine/core'
+import { TextInput, PasswordInput, Button, Card, Text } from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
 import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
@@ -46,6 +46,14 @@ export const SignInForm = () => {
 
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+      {error
+        ? (
+          <Card mt='lg' withBorder style={{background: 'var(--mantine-color-red-6)', color: 'var(--mantine-color-red-0)' }}>
+            <Text align='center' fs="italic">{error}</Text>
+          </Card>
+        )
+        : <></>
+      }
       <TextInput 
         mt="md"
         placeholder={t('mainpage.signform.email')}
