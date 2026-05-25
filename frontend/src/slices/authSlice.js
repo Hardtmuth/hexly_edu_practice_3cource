@@ -63,6 +63,23 @@ export const deleteAccount = createAsyncThunk(
   }
 )
 
+export const updateUser= createAsyncThunk(
+  'auth/updateUser',
+  async (userData, { getState, rejectWithValue }) => {
+    try {
+      const { token } = getState().auth
+      const response = await axios.put(routes.updatePath(), userData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      localStorage.setItem('userData', JSON.stringify(response.data.user))
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Ошибка при обновлении данных профиля')
+    }
+  }
+)
+
 const savedUser = localStorage.getItem('userData')
 let parsedUser = null
 
@@ -134,6 +151,18 @@ const authSlice = createSlice({
         state.isAuthenticated = false
       })
       .addCase(deleteAccount.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false
+        state.user = action.payload.user
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload
       })

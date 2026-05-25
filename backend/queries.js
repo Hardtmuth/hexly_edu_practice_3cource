@@ -62,4 +62,21 @@ const deleteUser = async (userId) => {
   return result.rowCount > 0
 }
 
-export { getDishes, findUserByEmail, verifyPassword, createUser, deleteUser, pool }
+const updateUser = async (userId, column, value) => {
+  const allowedColumns = ['user_name', 'email', 'phone']
+  if (!allowedColumns.includes(column)) {
+    throw new Error(`Изменение колонки ${column} запрещено`)
+  }
+
+  const queryText = `
+    UPDATE users 
+    SET ${column} = $1 
+    WHERE user_id = $2 
+    RETURNING user_id, user_name, role, email, phone
+  `
+
+  const result = await pool.query(queryText, [value, userId])
+  return result.rows[0]
+}
+
+export { getDishes, findUserByEmail, verifyPassword, createUser, deleteUser, updateUser, pool }

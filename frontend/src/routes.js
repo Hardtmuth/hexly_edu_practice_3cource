@@ -5,5 +5,6 @@ export default {
   dishesPath: () => [apiPath, 'dishes'].join('/'),
   authPath: () => [apiPath, 'auth', 'login'].join('/'),
   registerPath: () => [apiPath, 'auth', 'register'].join('/'),
-  deletePath: () => [apiPath, 'auth', 'delete-account'].join('/')
+  deletePath: () => [apiPath, 'auth', 'delete-account'].join('/'),
+  updatePath: () => [apiPath, 'auth', 'update-account'].join('/')
 }
