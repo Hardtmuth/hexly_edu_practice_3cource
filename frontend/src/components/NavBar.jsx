@@ -2,12 +2,15 @@ import { useState, useMemo } from 'react'
 import { IconUserCircle, IconHistory, IconLogout, IconTruckDelivery, IconRosetteDiscount, IconHelp} from '@tabler/icons-react'
 import { Code, Group } from '@mantine/core'
 import { useNavigate, Link, useLocation } from 'react-router'
+import { useDispatch } from 'react-redux'
 import classes from '../../assets/styles/Navbar.module.css'
+import { logout } from '../slices/authSlice.js'
 
 
 export const Navbar = () => {
   const [active, setActive] = useState('Профиль')
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const location = useLocation()
 
   const currentPath = location.pathname
@@ -60,13 +63,18 @@ export const Navbar = () => {
     </a>
   )})
 
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/')
+  }
+
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         {links}
       </div>
       <div className={classes.footer}>
-        <a href="#" className={classes.link} onClick={() => navigate('/')}>
+        <a href="#" className={classes.link} onClick={handleLogout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Выход</span>
         </a>

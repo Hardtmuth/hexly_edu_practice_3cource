@@ -43,4 +43,15 @@ const verifyPassword = async (inputPassword, hashedPassword) => {
   return await bcrypt.compare(inputPassword, hashedPassword)
 }
 
-export { getDishes, findUserByEmail, verifyPassword, pool }
+const createUser = async (userName, role, email, password, phone) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const result = await pool.query(
+    `INSERT INTO users (user_name, role, email, password, phone) 
+     VALUES ($1, $2, $3, $4, $5) 
+     RETURNING user_id, user_name, role, email, phone`,
+    [userName, 'customer', email, hashedPassword, phone]
+  )
+  return result.rows[0]
+}
+
+export { getDishes, findUserByEmail, verifyPassword, createUser, pool }

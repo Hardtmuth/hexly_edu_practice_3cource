@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { Anchor, Box, Burger, Container, Divider, Drawer, Group, ScrollArea, Modal, Tabs, Text } from '@mantine/core'
+import { Anchor, Box, Burger, Container, Divider, Drawer, Group, ScrollArea, Modal, Tabs, Text, Avatar, SimpleGrid } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { MantineLogo } from '@mantinex/mantine-logo'
+import { useSelector } from 'react-redux'
 import { useNavigate, Link, useLocation } from 'react-router'
-import { IconBasket, IconCakeRoll } from '@tabler/icons-react'
+import { IconBasket, IconCakeRoll, IconLogout } from '@tabler/icons-react'
 import classes from '../../assets/styles/Header.module.css'
 
 import { useTranslation } from 'react-i18next'
@@ -12,7 +12,12 @@ import { SignInForm } from './SignInForm.jsx'
 import { SignUpForm } from './SignUpForm.jsx'
 
 export const Header = () => {
-  // const [active, setActive] = useState(0)
+  const userData = useSelector((state) => state.auth)
+  console.log(userData)
+  const userLetters = userData.isAuthenticated && userData?.user
+    ? userData.user.name.split(' ').map(w => w.at(0)).join('')
+    : null
+
   const [opened, { open, close }] = useDisclosure(false)
   const navigate = useNavigate()
   const location = useLocation()
@@ -105,9 +110,21 @@ export const Header = () => {
           onClick={(event) => {
             event.preventDefault()
             item.onClick()
+            if (userData.isAuthenticated) {
+              navigate('/user')
+            } else {
+              item.onClick()
+            }
           }}
         >
-          {item.label}
+          {(userData.isAuthenticated && item.label === t('mainpage.header.signinout'))
+            ? <Group>
+                <Avatar size="sm" color="blue" radius="xl">
+                  {userLetters}
+                </Avatar>
+              </Group>
+            : <>{item.label}</>
+          }
         </Anchor>
       )
     }

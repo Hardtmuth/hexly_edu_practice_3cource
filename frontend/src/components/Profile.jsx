@@ -1,4 +1,4 @@
-import { Text, Table, SimpleGrid, ActionIcon } from '@mantine/core'
+import { Text, Table, SimpleGrid, ActionIcon, Button } from '@mantine/core'
 import { IconPencilMinus } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -50,10 +50,7 @@ export const Profile = () => {
             </Table.Tr>
           </Table.Tbody>
         </Table>
-        </div>
-        <div mx='lg'>
-          <Text>Корзина</Text>
-          <Text mt='lg' c="dimmed" fs="italic">Ваша корзина пуста</Text>
+        <Button mt='lg' color="red">Удалить аккаунт</Button>
         </div>
       </SimpleGrid> 
     </>

@@ -2,8 +2,14 @@ import { TextInput, PasswordInput, Button, MaskInput } from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { useForm, isNotEmpty, hasLength, isEmail, matchesField } from '@mantine/form'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import { registerUser } from '../slices/authSlice.js'
 
 export const SignUpForm = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth)
   const { t } = useTranslation()
 
   const form = useForm({
@@ -46,8 +52,22 @@ export const SignUpForm = () => {
     },
   })
 
+  const handleSubmit = (values) => {
+    console.log(values)
+      dispatch(registerUser(values))
+        .unwrap()
+        .then(() => {
+          console.log('Успешная регистрация')
+          navigate('/user')
+        })
+        .catch((errorMsg) => {
+          console.error('Ошибка:', errorMsg)
+        })
+    }
+  
+
   return (
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <TextInput
         mt="lg"
         placeholder={t('mainpage.signform.username')}

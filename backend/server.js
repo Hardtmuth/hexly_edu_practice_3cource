@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import jwt from 'jsonwebtoken'
-import { getDishes,  findUserByEmail, verifyPassword, pool } from './queries.js'
+import { getDishes,  findUserByEmail, verifyPassword, createUser, pool } from './queries.js'
 
 
 const apiPath = '/api/v1'
@@ -60,6 +60,45 @@ const server = () => {
           role: user.role,
           email: user.email,
           phone: user.phone
+        }
+      })
+    } catch (error) {
+      app.log.error(error)
+      reply.status(500).send({ error: 'Внутренняя ошибка сервера' })
+    }
+  })
+
+  app.post(getPath('auth/register'), async (request, reply) => {
+    try {
+      const { username, email, password, phone } = request.body
+
+      const existingUser = await findUserByEmail(email)
+      if (existingUser) {
+        return reply.status(400).send({
+          error: 'Пользователь с таким email уже зарегистрирован'
+        })
+      }
+
+      const newUser = await createUser(username, 'customer', email, password, phone)
+
+      const token = jwt.sign(
+        { 
+          userId: newUser.user_id, 
+          role: newUser.role, 
+          email: newUser.email 
+        },
+        process.env.JWT_SECRET || 'secret-key',
+        { expiresIn: '24h' }
+      )
+
+      reply.status(211).send({
+        token,
+        user: {
+          id: newUser.user_id,
+          name: newUser.user_name,
+          role: newUser.role,
+          email: newUser.email,
+          phone: newUser.phone
         }
       })
     } catch (error) {
