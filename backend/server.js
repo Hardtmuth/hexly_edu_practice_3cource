@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import jwt from 'jsonwebtoken'
-import { getDishes,  findUserByEmail, verifyPassword, createUser, pool } from './queries.js'
+import { getDishes,  findUserByEmail, verifyPassword, createUser, deleteUser, pool } from './queries.js'
 
 
 const apiPath = '/api/v1'
@@ -106,6 +106,29 @@ const server = () => {
       reply.status(500).send({ error: 'Внутренняя ошибка сервера' })
     }
   })
+
+  app.delete(getPath('auth/delete-account'), async (request, reply) => {
+  try {
+    const authHeader = request.headers.authorization
+    if (!authHeader) {
+      return reply.status(401).send({ error: 'Токен отсутствует' })
+    }
+    
+    const token = authHeader.split(' ')[1]
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret-key')
+    
+    const isDeleted = await deleteUser(decoded.userId)
+    
+    if (!isDeleted) {
+      return reply.status(404).send({ error: 'Пользователь не найден' })
+    }
+
+    reply.send({ message: 'Аккаунт успешно удален' })
+  } catch (error) {
+    app.log.error(error)
+    return reply.status(401).send({ error: 'Невалидный токен' })
+  }
+})
 
   return app
 }

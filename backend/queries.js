@@ -54,4 +54,12 @@ const createUser = async (userName, role, email, password, phone) => {
   return result.rows[0]
 }
 
-export { getDishes, findUserByEmail, verifyPassword, createUser, pool }
+const deleteUser = async (userId) => {
+  const result = await pool.query(
+    'DELETE FROM users WHERE user_id = $1 RETURNING user_id',
+    [userId]
+  )
+  return result.rowCount > 0
+}
+
+export { getDishes, findUserByEmail, verifyPassword, createUser, deleteUser, pool }

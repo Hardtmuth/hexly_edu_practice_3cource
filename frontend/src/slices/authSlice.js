@@ -41,6 +41,28 @@ export const registerUser = createAsyncThunk(
   }
 )
 
+export const deleteAccount = createAsyncThunk(
+  'auth/deleteAccount',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { token } = getState().auth
+
+      const response = await axios.delete(routes.deletePath(), {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('userData')
+
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Ошибка при удалении аккаунта')
+    }
+  }
+)
+
 const savedUser = localStorage.getItem('userData')
 let parsedUser = null
 
@@ -98,6 +120,20 @@ const authSlice = createSlice({
         state.isAuthenticated = true
       })
       .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(deleteAccount.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(deleteAccount.fulfilled, (state) => {
+        state.loading = false
+        state.user = null
+        state.token = null
+        state.isAuthenticated = false
+      })
+      .addCase(deleteAccount.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload
       })
