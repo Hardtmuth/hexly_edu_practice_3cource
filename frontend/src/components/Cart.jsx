@@ -1,17 +1,29 @@
-import { Container, SimpleGrid, Text, Table, Button, Group, Modal } from '@mantine/core'
+import { Container, SimpleGrid, Text, Table, Button, Group, Modal, ActionIcon } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { OrderModal } from './OrderModal.jsx'
 import { increment, decrement, removeItem, clearCart } from '../slices/cartSlice.js'
+import { toggleDelivery } from '../slices/deliverySlice.js'
+import { IconEdit } from '@tabler/icons-react'
+import { useNavigate } from 'react-router'
+import { useEffect } from 'react'
+
 
 const PRIMARY_COL_HEIGHT = '300px'
 
 export const Cart = () => {
   const cart = useSelector(state => state.cart)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [opened, { open, close }] = useDisclosure(false)
+
+  const [openedChangeDelivery, { open: openChangeDelivery, close: closeChangeDelivery }] = useDisclosure(false)
+
+  const isDelivery = useSelector(state => state.delivery.isDelivery)
+  const address = useSelector(state => state.delivery.address)
+  console.log('address is: ', address, isDelivery)
 
   const { t } = useTranslation()
 
@@ -44,17 +56,39 @@ export const Cart = () => {
   },
   )
 
-  const handleOpenModal = () => open()
+  const handleOpenModal = () => {
+    dispatch(clearCart())
+    open()
+  }
 
   const totalPrice = cart.reduce((acc, item) => {
     acc += item.price * item.count
     return acc
   }, 0)
 
+
   return (
     <>
       <Modal opened={opened} onClose={close} title={t('cartpage.orderModal.header')}>
         <OrderModal />
+      </Modal>
+
+      <Modal opened={openedChangeDelivery} onClose={closeChangeDelivery} title='Изменить адрес или способ доставки'>
+        <Group>
+        <Button mt="md" onClick={() => {
+          dispatch(toggleDelivery())
+          closeChangeDelivery()
+        }}>
+          Самовывоз
+        </Button>
+        <Button mt="md" onClick={() => {
+          dispatch(toggleDelivery())
+          closeChangeDelivery()
+          navigate('/delivery')
+        }}>
+          Ввести новый адрес
+        </Button>
+        </Group>
       </Modal>
 
       <Container>
@@ -79,9 +113,32 @@ export const Cart = () => {
                   <Table.Tbody>{rows}</Table.Tbody>
                 </Table>
                 <Group justify="end" mt="md">
+                  <Text>
+                    {isDelivery
+                      ? <Group>
+                          <Text fw={750}>
+                            {t('cartpage.deliveryTo')}
+                          </Text>
+                          <Text>{address}</Text>
+                          <ActionIcon onClick={openChangeDelivery} size="xs" variant="outline" color='gray'>
+                            <IconEdit stroke={1.5} size={12} />
+                          </ActionIcon>
+                        </Group>
+                      : <></>
+                    }
+                  </Text>
                   <Text fw={750}>{`${t('cartpage.totalPrice')} ${(totalPrice).toFixed(2)} ${t('cartpage.currency')}`}</Text>
-                  <Button onClick={() => handleOpenModal()}>{t('cartpage.order')}</Button>
+                  <Button
+                    onClick={() => handleOpenModal()}
+                    disabled={cart.length === 0 || (isDelivery && !address) || (isDelivery && totalPrice < 700) }
+                  >
+                    {t('cartpage.order')}
+                  </Button>
                 </Group>
+                {isDelivery && totalPrice < 700
+                    ? <><Text c="dimmed" size="sm" fs='italic' mt='lg'><sup>*</sup>{t('cartpage.deliveryCondition')}</Text></>
+                    : <></>
+                  }
               </>
             )
           : (

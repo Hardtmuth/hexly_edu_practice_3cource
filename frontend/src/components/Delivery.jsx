@@ -2,8 +2,14 @@ import { Container, Title, Text, TextInput,Input, Textarea, Group, SimpleGrid, C
 import { isNotEmpty, useForm } from '@mantine/form'
 import { useTranslation } from 'react-i18next'
 
+import { addAddress, toggleDelivery } from '../slices/deliverySlice.js'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
+
 export const Delivery = () => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -16,6 +22,17 @@ export const Delivery = () => {
       rules: isNotEmpty(t('deliverypage.form.errors.rules')),
     },
   })
+
+  const handleSubmit = (values) => {
+    const { street, house, entrance, apartments, phone, description } = values
+    const address = `${street} ${house}${entrance ? `, подъезд ${entrance}` : ''}${apartments ? `, кв. ${apartments}` : ''}`
+    console.log(address)
+
+    dispatch(addAddress(address))
+    dispatch(toggleDelivery())
+    navigate('/cart')
+  }
+
   return (
     <Container>
       <SimpleGrid cols={2}>
@@ -78,7 +95,7 @@ export const Delivery = () => {
             key={form.key('description')}
             {...form.getInputProps('description')}
           />
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <form onSubmit={form.onSubmit(handleSubmit)}>
             <Checkbox
               mt='lg'
               label={
@@ -106,7 +123,9 @@ export const Delivery = () => {
               {...form.getInputProps('rules', { type: 'checkbox' })}
             />
 
-            <Button type="submit" mt="md">
+            <Button type="submit" mt="md"
+              disabled={!form.isValid()}
+            >
               {t('deliverypage.form.labels.btn')}
             </Button>
           </form>
