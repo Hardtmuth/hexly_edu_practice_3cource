@@ -30,10 +30,11 @@ const findUserByEmail = async (email) => {
   try {
     const result = await pool.query(
       'SELECT * FROM users WHERE email = $1',
-      [email]
+      [email],
     )
     return result.rows[0] || null
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Ошибка при поиске пользователя:', error)
     throw error
   }
@@ -44,12 +45,12 @@ const verifyPassword = async (inputPassword, hashedPassword) => {
 }
 
 const createUser = async (userName, role, email, password, phone) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10)
   const result = await pool.query(
     `INSERT INTO users (user_name, role, email, password, phone) 
      VALUES ($1, $2, $3, $4, $5) 
      RETURNING user_id, user_name, role, email, phone`,
-    [userName, 'customer', email, hashedPassword, phone]
+    [userName, 'customer', email, hashedPassword, phone],
   )
   return result.rows[0]
 }
@@ -57,7 +58,7 @@ const createUser = async (userName, role, email, password, phone) => {
 const deleteUser = async (userId) => {
   const result = await pool.query(
     'DELETE FROM users WHERE user_id = $1 RETURNING user_id',
-    [userId]
+    [userId],
   )
   return result.rowCount > 0
 }

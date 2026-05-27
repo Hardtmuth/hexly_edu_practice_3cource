@@ -11,7 +11,7 @@ export const SignInForm = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { loading, error } = useSelector((state) => state.auth)
+  const { error } = useSelector(state => state.auth)
 
   const handleSubmit = (values) => {
     dispatch(login(values))
@@ -40,35 +40,34 @@ export const SignInForm = () => {
         if (emptyCheck) return emptyCheck
         if (lengthCheck) return lengthCheck
         return null
-      }
+      },
     },
   })
 
   return (
-    <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+    <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
       {error
         ? (
-          <Card mt='lg' withBorder style={{background: 'var(--mantine-color-red-6)', color: 'var(--mantine-color-red-0)' }}>
-            <Text align='center' fs="italic">{error}</Text>
-          </Card>
-        )
-        : <></>
-      }
-      <TextInput 
+            <Card mt="lg" withBorder style={{ background: 'var(--mantine-color-red-6)', color: 'var(--mantine-color-red-0)' }}>
+              <Text align="center" fs="italic">{error}</Text>
+            </Card>
+          )
+        : <></>}
+      <TextInput
         mt="md"
         placeholder={t('mainpage.signform.email')}
         rightSection={<IconAt size={16} />}
         key={form.key('email')}
         {...form.getInputProps('email')}
       />
-      <PasswordInput 
-        mt="md" 
+      <PasswordInput
+        mt="md"
         placeholder={t('mainpage.signform.password')}
         key={form.key('password')}
         {...form.getInputProps('password')}
       />
-      <Button 
-        mt="md" 
+      <Button
+        mt="md"
         fullWidth
         type="submit"
       >

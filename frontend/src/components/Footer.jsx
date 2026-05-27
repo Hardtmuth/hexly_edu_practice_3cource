@@ -39,7 +39,6 @@ export const Footer = () => {
         component="a"
         onClick={(event) => {
           event.preventDefault()
-          // setActive(index)
           navigate(link.link)
         }}
       >

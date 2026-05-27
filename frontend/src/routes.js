@@ -6,5 +6,5 @@ export default {
   authPath: () => [apiPath, 'auth', 'login'].join('/'),
   registerPath: () => [apiPath, 'auth', 'register'].join('/'),
   deletePath: () => [apiPath, 'auth', 'delete-account'].join('/'),
-  updatePath: () => [apiPath, 'auth', 'update-account'].join('/')
+  updatePath: () => [apiPath, 'auth', 'update-account'].join('/'),
 }

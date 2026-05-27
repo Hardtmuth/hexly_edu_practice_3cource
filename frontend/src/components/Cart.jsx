@@ -8,8 +8,6 @@ import { increment, decrement, removeItem, clearCart } from '../slices/cartSlice
 import { toggleDelivery } from '../slices/deliverySlice.js'
 import { IconEdit } from '@tabler/icons-react'
 import { useNavigate } from 'react-router'
-import { useEffect } from 'react'
-
 
 const PRIMARY_COL_HEIGHT = '300px'
 
@@ -37,16 +35,16 @@ export const Cart = () => {
         <Table.Td>
           <Button.Group>
             <Button variant="subtle" onClick={() => dispatch(decrement(item.id))} size="xs">
-              -
+              {t('cartpage.table.decrement')}
             </Button>
             <Button.GroupSection variant="subtle" bg="var(--mantine-color-body)" size="xs">
               {item.count}
             </Button.GroupSection>
             <Button variant="subtle" onClick={() => dispatch(increment(item.id))} size="xs">
-              +
+              {t('cartpage.table.increment')}
             </Button>
             <Button variant="subtle" color="red" onClick={() => dispatch(removeItem(item.id))} size="xs">
-              ×
+              {t('cartpage.table.remove')}
             </Button>
           </Button.Group>
         </Table.Td>
@@ -66,28 +64,33 @@ export const Cart = () => {
     return acc
   }, 0)
 
-
   return (
     <>
       <Modal opened={opened} onClose={close} title={t('cartpage.orderModal.header')}>
         <OrderModal />
       </Modal>
 
-      <Modal opened={openedChangeDelivery} onClose={closeChangeDelivery} title='Изменить адрес или способ доставки'>
+      <Modal opened={openedChangeDelivery} onClose={closeChangeDelivery} title="Изменить адрес или способ доставки">
         <Group>
-        <Button mt="md" onClick={() => {
-          dispatch(toggleDelivery())
-          closeChangeDelivery()
-        }}>
-          Самовывоз
-        </Button>
-        <Button mt="md" onClick={() => {
-          dispatch(toggleDelivery())
-          closeChangeDelivery()
-          navigate('/delivery')
-        }}>
-          Ввести новый адрес
-        </Button>
+          <Button
+            mt="md"
+            onClick={() => {
+              dispatch(toggleDelivery())
+              closeChangeDelivery()
+            }}
+          >
+            {t('cartpage.deliveryModal.selfPickup')}
+          </Button>
+          <Button
+            mt="md"
+            onClick={() => {
+              dispatch(toggleDelivery())
+              closeChangeDelivery()
+              navigate('/delivery')
+            }}
+          >
+            {t('cartpage.deliveryModal.newAddress')}
+          </Button>
         </Group>
       </Modal>
 
@@ -115,30 +118,37 @@ export const Cart = () => {
                 <Group justify="end" mt="md">
                   <Text>
                     {isDelivery
-                      ? <Group>
-                          <Text fw={750}>
-                            {t('cartpage.deliveryTo')}
-                          </Text>
-                          <Text>{address}</Text>
-                          <ActionIcon onClick={openChangeDelivery} size="xs" variant="outline" color='gray'>
-                            <IconEdit stroke={1.5} size={12} />
-                          </ActionIcon>
-                        </Group>
-                      : <></>
-                    }
+                      ? (
+                          <Group>
+                            <Text fw={750}>
+                              {t('cartpage.deliveryTo')}
+                            </Text>
+                            <Text>{address}</Text>
+                            <ActionIcon onClick={openChangeDelivery} size="xs" variant="outline" color="gray">
+                              <IconEdit stroke={1.5} size={12} />
+                            </ActionIcon>
+                          </Group>
+                        )
+                      : <></>}
                   </Text>
                   <Text fw={750}>{`${t('cartpage.totalPrice')} ${(totalPrice).toFixed(2)} ${t('cartpage.currency')}`}</Text>
                   <Button
                     onClick={() => handleOpenModal()}
-                    disabled={cart.length === 0 || (isDelivery && !address) || (isDelivery && totalPrice < 700) }
+                    disabled={cart.length === 0 || (isDelivery && !address) || (isDelivery && totalPrice < 700)}
                   >
                     {t('cartpage.order')}
                   </Button>
                 </Group>
                 {isDelivery && totalPrice < 700
-                    ? <><Text c="dimmed" size="sm" fs='italic' mt='lg'><sup>*</sup>{t('cartpage.deliveryCondition')}</Text></>
-                    : <></>
-                  }
+                  ? (
+                      <>
+                        <Text c="dimmed" size="sm" fs="italic" mt="lg">
+                          <sup>*</sup>
+                          {t('cartpage.deliveryCondition')}
+                        </Text>
+                      </>
+                    )
+                  : <></>}
               </>
             )
           : (

@@ -8,7 +8,7 @@ import { logout } from '../slices/authSlice.js'
 
 export const AuthHeader = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.auth.user)
+  const user = useSelector(state => state.auth.user)
   const userLetters = user.name.split(' ').map(w => w.at(0)).join('')
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -34,7 +34,7 @@ export const AuthHeader = () => {
             onClick={() => navigate('/?category=menu')}
             style={{ cursor: 'pointer' }}
           >
-            Меню
+            {t('userpage.header.menu')}
           </a>
           <Avatar color="blue" radius="xl">{userLetters}</Avatar>
           <Text>{user.name}</Text>
@@ -44,11 +44,11 @@ export const AuthHeader = () => {
                 component="a"
                 onClick={handleLogout}
               >
-                <IconLogout size={28} style={{ transform: 'translateY(4px)' }}/>
+                <IconLogout size={28} style={{ transform: 'translateY(4px)' }} />
               </Anchor>
             </HoverCard.Target>
             <HoverCard.Dropdown>
-              <Text size="sm">Выход</Text>
+              <Text size="sm">{t('userpage.header.exit')}</Text>
             </HoverCard.Dropdown>
           </HoverCard>
         </Group>

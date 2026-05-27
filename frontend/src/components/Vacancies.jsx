@@ -20,13 +20,13 @@ export const Vacancies = () => {
           />
         </Grid.Col>
         <Grid.Col span={5}>
-          <List mt='lg'>
+          <List mt="lg">
             <List.Item>{t('vacanciespage.vacancies.vacance1')}</List.Item>
             <List.Item>{t('vacanciespage.vacancies.vacance2')}</List.Item>
             <List.Item>{t('vacanciespage.vacancies.vacance3')}</List.Item>
             <List.Item>{t('vacanciespage.vacancies.vacance4')}</List.Item>
           </List>
-          <Text fw={750} mt='lg'>
+          <Text fw={750} mt="lg">
             {t('vacanciespage.offer.title')}
           </Text>
           <List>
@@ -37,7 +37,7 @@ export const Vacancies = () => {
             <List.Item>{t('vacanciespage.offer.item5')}</List.Item>
             <List.Item>{t('vacanciespage.offer.item6')}</List.Item>
           </List>
-          <Text fw={750} mt='lg'>
+          <Text fw={750} mt="lg">
             {t('vacanciespage.phone')}
           </Text>
         </Grid.Col>
@@ -53,5 +53,5 @@ export const Vacancies = () => {
         </Grid.Col>
       </Grid>
     </Container>
-  );
-};
+  )
+}

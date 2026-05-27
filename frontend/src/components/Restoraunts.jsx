@@ -61,12 +61,6 @@ export const Restoraunts = () => {
           />
         </Grid.Col>
       </Grid>
-
-      <Group justify="center" mt="md">
-        {/* <Button my="lg">
-          {t('restorauntspage.btn')}
-        </Button> */}
-      </Group>
     </Container>
   )
 }

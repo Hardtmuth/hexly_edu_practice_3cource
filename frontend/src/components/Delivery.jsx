@@ -1,4 +1,4 @@
-import { Container, Title, Text, TextInput,Input, Textarea, Group, SimpleGrid, Checkbox, Anchor, Button, MaskInput } from '@mantine/core'
+import { Container, Title, Text, TextInput, Input, Textarea, Group, SimpleGrid, Checkbox, Anchor, Button, MaskInput } from '@mantine/core'
 import { isNotEmpty, useForm } from '@mantine/form'
 import { useTranslation } from 'react-i18next'
 
@@ -24,7 +24,7 @@ export const Delivery = () => {
   })
 
   const handleSubmit = (values) => {
-    const { street, house, entrance, apartments, phone, description } = values
+    const { street, house, entrance, apartments } = values
     const address = `${street} ${house}${entrance ? `, подъезд ${entrance}` : ''}${apartments ? `, кв. ${apartments}` : ''}`
     console.log(address)
 
@@ -42,7 +42,7 @@ export const Delivery = () => {
           <TextInput
             label={t('deliverypage.form.labels.street')}
             withAsterisk
-            mt='lg'
+            mt="lg"
             placeholder={t('deliverypage.form.placeholders.street')}
             key={form.key('street')}
             {...form.getInputProps('street')}
@@ -51,7 +51,7 @@ export const Delivery = () => {
             <TextInput
               label={t('deliverypage.form.labels.house')}
               withAsterisk
-              mt='lg'
+              mt="lg"
               placeholder={t('deliverypage.form.placeholders.house')}
               key={form.key('house')}
               {...form.getInputProps('house')}
@@ -60,7 +60,7 @@ export const Delivery = () => {
             />
             <TextInput
               label={t('deliverypage.form.labels.entrance')}
-              mt='lg'
+              mt="lg"
               placeholder={t('deliverypage.form.placeholders.entrance')}
               key={form.key('entrance')}
               {...form.getInputProps('entrance')}
@@ -69,7 +69,7 @@ export const Delivery = () => {
             />
             <TextInput
               label={t('deliverypage.form.labels.apartments')}
-              mt='lg'
+              mt="lg"
               placeholder={t('deliverypage.form.placeholders.apartments')}
               key={form.key('apartments')}
               {...form.getInputProps('apartments')}
@@ -83,11 +83,10 @@ export const Delivery = () => {
             mask="+7 (999) 999-99-99"
             placeholder={t('deliverypage.form.placeholders.phone')}
             withAsterisk
-            /* key={form.key('phone')}
-            {...form.getInputProps('phone')} */
-            onChangeRaw={(raw) => form.setFieldValue('phone', raw)}
+            onChangeRaw={raw => form.setFieldValue('phone', raw)}
           />
-          <Textarea mt='lg'
+          <Textarea
+            mt="lg"
             label={t('deliverypage.form.labels.description')}
             placeholder={t('deliverypage.form.placeholders.description')}
             autosize
@@ -97,33 +96,37 @@ export const Delivery = () => {
           />
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Checkbox
-              mt='lg'
-              label={
+              mt="lg"
+              label={(
                 <>
-                 {t('deliverypage.form.labels.terms')}{' '}
+                  {t('deliverypage.form.labels.terms')}
+                  {' '}
                   <Anchor href="/agreement" target="_blank" inherit>
                     {t('deliverypage.form.labels.termsLink')}
                   </Anchor>
                 </>
-              }
+              )}
               key={form.key('terms')}
               {...form.getInputProps('terms', { type: 'checkbox' })}
             />
             <Checkbox
-              mt='lg'
-              label={
+              mt="lg"
+              label={(
                 <>
-                  {t('deliverypage.form.labels.rules')}{' '}
+                  {t('deliverypage.form.labels.rules')}
+                  {' '}
                   <Anchor href="/agreement" target="_blank" inherit>
                     {t('deliverypage.form.labels.rulesLink')}
                   </Anchor>
                 </>
-              }
+              )}
               key={form.key('rules')}
               {...form.getInputProps('rules', { type: 'checkbox' })}
             />
 
-            <Button type="submit" mt="md"
+            <Button
+              type="submit"
+              mt="md"
               disabled={!form.isValid()}
             >
               {t('deliverypage.form.labels.btn')}

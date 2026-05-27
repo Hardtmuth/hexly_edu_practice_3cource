@@ -5,7 +5,6 @@ import ru from './locales/ru.js'
 i18n
   .use(initReactI18next)
   .init({
-    // debug: true,
     resources: {
       ru: { translation: ru },
     },

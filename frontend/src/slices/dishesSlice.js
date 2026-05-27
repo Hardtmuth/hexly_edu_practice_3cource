@@ -5,12 +5,7 @@ import routes from '../routes.js'
 export const fetchDishes = createAsyncThunk(
   'dishes/fetchDishes',
   async () => {
-    // const token = JSON.parse(localStorage.getItem('userId')).token
-    // if (!token) {
-    //  throw new Error('Токен не найден')
-    // }
     const response = await axios.get(routes.dishesPath())
-    // console.log('Response is: ', response)
     return response.data
   },
 )
@@ -25,9 +20,6 @@ const initialState = dishesAdapter.getInitialState({
 const dishesSlice = createSlice({
   name: 'dishes',
   initialState,
-  /* reducers: {
-    addM: goodsAdapter.addOne,
-  }, */
   extraReducers: (builder) => {
     builder
       .addCase(fetchDishes.pending, (state) => {
@@ -45,6 +37,5 @@ const dishesSlice = createSlice({
   },
 })
 
-// export const { addM } = messagesSlice.actions
 export const dishesSelectors = dishesAdapter.getSelectors(state => state.dishes)
 export default dishesSlice.reducer

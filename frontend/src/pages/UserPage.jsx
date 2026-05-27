@@ -10,13 +10,10 @@ import { Addresses } from '../components/Addresses.jsx'
 import { Discounts } from '../components/Discounts.jsx'
 import { Help } from '../components/Help.jsx'
 
-
-import { useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router'
 
 export const UserPage = () => {
   const [opened] = useDisclosure()
-  const user = useSelector((state) => state.auth.user)
 
   const [searchParams] = useSearchParams()
   const selectParam = searchParams.get('select')
@@ -28,7 +25,6 @@ export const UserPage = () => {
     discounts: <Discounts />,
     help: <Help />,
   }
-
 
   return (
     <AppShell

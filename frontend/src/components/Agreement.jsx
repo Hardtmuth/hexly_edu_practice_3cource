@@ -6,11 +6,11 @@ export const Agreement = () => {
   return (
     <Container>
       <Title order={3}>{t('agreementpage.title')}</Title>
-      <Text mt='lg'>
+      <Text mt="lg">
         {t('agreementpage.text')}
       </Text>
       <Image
-        mt='lg'
+        mt="lg"
         radius="md"
         h={500}
         w="auto"

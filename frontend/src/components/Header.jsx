@@ -12,7 +12,7 @@ import { SignInForm } from './SignInForm.jsx'
 import { SignUpForm } from './SignUpForm.jsx'
 
 export const Header = () => {
-  const userData = useSelector((state) => state.auth)
+  const userData = useSelector(state => state.auth)
   console.log(userData)
   const userLetters = userData.isAuthenticated && userData?.user
     ? userData.user.name.split(' ').map(w => w.at(0)).join('')
@@ -112,19 +112,21 @@ export const Header = () => {
             item.onClick()
             if (userData.isAuthenticated) {
               navigate('/user')
-            } else {
+            }
+            else {
               item.onClick()
             }
           }}
         >
           {(userData.isAuthenticated && item.label === t('mainpage.header.signinout'))
-            ? <Group>
-                <Avatar size="sm" color="blue" radius="xl">
-                  {userLetters}
-                </Avatar>
-              </Group>
-            : <>{item.label}</>
-          }
+            ? (
+                <Group>
+                  <Avatar size="sm" color="blue" radius="xl">
+                    {userLetters}
+                  </Avatar>
+                </Group>
+              )
+            : <>{item.label}</>}
         </Anchor>
       )
     }

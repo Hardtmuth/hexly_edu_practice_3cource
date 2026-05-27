@@ -12,33 +12,37 @@ export const login = createAsyncThunk(
       localStorage.setItem('userData', JSON.stringify(response.data.user))
 
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       if (error.response) {
         const errorMessage = error.response.data.error || 'Ошибка авторизации'
-        return rejectWithValue(errorMessage);
-      } else if (error.request) {
+        return rejectWithValue(errorMessage)
+      }
+      else if (error.request) {
         return rejectWithValue('Нет ответа от сервера')
-      } else {
+      }
+      else {
         return rejectWithValue('Ошибка сети')
       }
     }
-  }
+  },
 )
 
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(routes.registerPath(), userData) 
-      
+      const response = await axios.post(routes.registerPath(), userData)
+
       localStorage.setItem('authToken', response.data.token)
       localStorage.setItem('userData', JSON.stringify(response.data.user))
-      
+
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.response?.data?.error || 'Ошибка при регистрации')
     }
-  }
+  },
 )
 
 export const deleteAccount = createAsyncThunk(
@@ -49,35 +53,37 @@ export const deleteAccount = createAsyncThunk(
 
       const response = await axios.delete(routes.deletePath(), {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
 
       localStorage.removeItem('authToken')
       localStorage.removeItem('userData')
 
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.response?.data?.error || 'Ошибка при удалении аккаунта')
     }
-  }
+  },
 )
 
-export const updateUser= createAsyncThunk(
+export const updateUser = createAsyncThunk(
   'auth/updateUser',
   async (userData, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth
       const response = await axios.put(routes.updatePath(), userData, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       })
 
       localStorage.setItem('userData', JSON.stringify(response.data.user))
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.response?.data?.error || 'Ошибка при обновлении данных профиля')
     }
-  }
+  },
 )
 
 const savedUser = localStorage.getItem('userData')
@@ -85,8 +91,9 @@ let parsedUser = null
 
 try {
   parsedUser = savedUser ? JSON.parse(savedUser) : null
-} catch (e) {
-  console.error("Ошибка парсинга userData из localStorage", e)
+}
+catch (e) {
+  console.error('Ошибка парсинга userData из localStorage', e)
 }
 
 const initialState = {
@@ -108,7 +115,7 @@ const authSlice = createSlice({
       state.token = null
       state.isAuthenticated = false
       state.error = null
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

@@ -2,14 +2,13 @@ import { TextInput, PasswordInput, Button, MaskInput } from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import { useForm, isNotEmpty, hasLength, isEmail, matchesField } from '@mantine/form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { registerUser } from '../slices/authSlice.js'
 
 export const SignUpForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { loading, error, isAuthenticated } = useSelector((state) => state.auth)
   const { t } = useTranslation()
 
   const form = useForm({
@@ -47,24 +46,22 @@ export const SignUpForm = () => {
       },
       passwordConfirmation: matchesField(
         'password',
-        t('mainpage.signform.errors.passwordConfirm')
+        t('mainpage.signform.errors.passwordConfirm'),
       ),
     },
   })
 
   const handleSubmit = (values) => {
     console.log(values)
-      dispatch(registerUser(values))
-        .unwrap()
-        .then(() => {
-          console.log('Успешная регистрация')
-          navigate('/user')
-        })
-        .catch((errorMsg) => {
-          console.error('Ошибка:', errorMsg)
-        })
-    }
-  
+    dispatch(registerUser(values))
+      .unwrap()
+      .then(() => {
+        navigate('/user')
+      })
+      .catch((errorMsg) => {
+        console.error('Ошибка:', errorMsg)
+      })
+  }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -85,10 +82,7 @@ export const SignUpForm = () => {
         mt="lg"
         mask="+7 (999) 999-99-99"
         placeholder={t('mainpage.signform.phone')}
-        /* key={form.key('phone')}  -- !!! need to fix */
-        /* defaultValue={form.getValues().phone} */
-        onChangeRaw={(raw) => form.setFieldValue('phone', raw)}
-        /* {...form.getInputProps('phone')} */
+        onChangeRaw={raw => form.setFieldValue('phone', raw)}
       />
       <PasswordInput
         mt="lg"

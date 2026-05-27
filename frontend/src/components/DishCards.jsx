@@ -14,7 +14,7 @@ import { addToCart } from '../slices/cartSlice.js'
 
 import { CardModal } from './CardModal.jsx'
 
-const RenderCard = ({ cardData, onOpenModal, categoryParam}) => {
+const RenderCard = ({ cardData, onOpenModal, categoryParam }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const basePath = new URL('../../assets/img', import.meta.url).href
@@ -112,22 +112,21 @@ const RenderTable = ({ cardData, onOpenModal, categoryParam }) => {
         {' '}
         {t('dishCardModal.unit')}
       </Table.Td>
-        {categoryParam === 'businesslunch'
-          ? (
+      {categoryParam === 'businesslunch'
+        ? (
             <Table.Td>
               {(cardData.price * 0.7).toFixed(2)}
               {' '}
               {t('dishCardModal.currency')}
             </Table.Td>
           )
-          : (
+        : (
             <Table.Td>
               {cardData.price}
               {' '}
               {t('dishCardModal.currency')}
             </Table.Td>
-          )
-        }
+          )}
       <Table.Td>
         <ActionIcon
           variant="default"
@@ -147,7 +146,7 @@ const categoriesMap = {
   lunch: [2, 5, 6],
   dinner: [6, 7, 8],
   drinks: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-  businesslunch: [2, 5, 8, 12]
+  businesslunch: [2, 5, 8, 12],
 }
 
 const categoriesNames = {
@@ -173,34 +172,28 @@ const categoriesNames = {
   20: 'Кофе',
 }
 
-const businesslunchDishesId = [8, 13, 39 ,28, 29, 30, 42, 43, 44, 62, 61]
+const businesslunchDishesId = [8, 13, 39, 28, 29, 30, 42, 43, 44, 62, 61]
 
 const DishCards = (view = { view: 'card' }) => {
-  // console.log('view is: ', view)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  // const dishes = useSelector(dishesSelectors.selectEntities)
   const dishesIds = useSelector(dishesSelectors.selectIds)
   const dishesEntities = useSelector(dishesSelectors.selectEntities)
   const dishesList = dishesIds.map(id => dishesEntities[id])
-  // const cart = useSelector(state => state.cart)
-  // console.log('cart is: ', cart)
 
   const [searchParams] = useSearchParams()
   const categoryParam = searchParams.get('category')
-  // console.log(category)
 
   const businessDishes = dishesList.filter(dish => businesslunchDishesId.includes(dish.id))
 
   const filteredDishes = (categoryParam && categoryParam !== 'menu')
     ? (categoryParam && categoryParam === 'businesslunch')
-      ? businessDishes.filter((dish) => {
-          return categoriesMap[categoryParam].includes(dish.category)
-        })
-      : dishesList.filter((dish) => {
-      // console.log(dish.category, categoriesMap[category], categoriesMap[category].includes(dish.category))
-        return categoriesMap[categoryParam].includes(dish.category)
-      })
+        ? businessDishes.filter((dish) => {
+            return categoriesMap[categoryParam].includes(dish.category)
+          })
+        : dishesList.filter((dish) => {
+            return categoriesMap[categoryParam].includes(dish.category)
+          })
     : dishesList
 
   const dishesByCategory = filteredDishes.reduce((acc, dish) => {
@@ -210,8 +203,6 @@ const DishCards = (view = { view: 'card' }) => {
     acc[dish.category].push(dish)
     return acc
   }, {})
-
-  // console.log('dishesByCategory is: ', dishesByCategory)
 
   const [opened, { open, close }] = useDisclosure(false)
   const [selectedCard, setSelectedCard] = useState(null)
@@ -233,14 +224,16 @@ const DishCards = (view = { view: 'card' }) => {
 
       {categoryParam === 'businesslunch'
         ? (
-          <>
-            <hr></hr>
-            <Title order={4}>{t('mainpage.businessTitle')}</Title>
-            <Text c="dimmed" fs="italic"><sup>*</sup>{t('mainpage.businessText')}</Text>
-          </>
-        )
-        : <></>
-      }
+            <>
+              <hr></hr>
+              <Title order={4}>{t('mainpage.businessTitle')}</Title>
+              <Text c="dimmed" fs="italic">
+                <sup>*</sup>
+                {t('mainpage.businessText')}
+              </Text>
+            </>
+          )
+        : <></>}
 
       {Object.entries(dishesByCategory).map(([category, dishes]) => {
         return (
@@ -270,13 +263,6 @@ const DishCards = (view = { view: 'card' }) => {
           </Box>
         )
       })}
-      {/* {filteredDishes.map(cardData => (
-          <RenderCard
-            key={cardData.id}
-            cardData={cardData}
-            onOpenModal={handleOpenModal}
-          />
-        ))} */}
     </>
 
   )
